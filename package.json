@@ -1,0 +1,303 @@
+{
+  "name": "folder-colorizer",
+  "displayName": "FolderColorizer",
+  "description": "The Folder Colorizer extension for Visual Studio Code provides an easy and convenient way to change the color of folders in the file explorer",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "folder-colorizer.setColor"
+        },
+        {
+          "command": "folder-colorizer.setBadge"
+        },
+        {
+          "command": "folder-colorizer.clearColorizer"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "folder-colorizer.setColor",
+        "title": "Colorize"
+      },
+      {
+        "command": "folder-colorizer.setBadge",
+        "title": "Set budge"
+      },
+      {
+        "command": "folder-colorizer.clearColorizer",
+        "title": "Clear colorizer"
+      }
+    ],
+    "colors": [
+      {
+        "id": "foldercolorizer.blue",
+        "description": "Blue color.",
+        "defaults": {
+          "dark": "#7ed7f5",
+          "light": "#01bdfb",
+          "highContrast": "#7ed7f5",
+          "highContrastLight": "#01bdfb"
+        }
+      },
+      {
+        "id": "foldercolorizer.red",
+        "description": "Red color.",
+        "defaults": {
+          "dark": "#eb8a8a",
+          "light": "#8b0000",
+          "highContrast": "#eb8a8a",
+          "highContrastLight": "#8b0000"
+        }
+      },
+      {
+        "id": "foldercolorizer.green",
+        "description": "Green color.",
+        "defaults": {
+          "dark": "#00ff00",
+          "light": "#00ff00",
+          "highContrast": "#00ff00",
+          "highContrastLight": "#006400"
+        }
+      },
+      {
+        "id": "foldercolorizer.yellow",
+        "description": "Yellow color.",
+        "defaults": {
+          "dark": "#ffff00",
+          "light": "#ffd700",
+          "highContrast": "#ffd700",
+          "highContrastLight": "#ffff00"
+        }
+      },
+      {
+        "id": "foldercolorizer.orange",
+        "description": "Orange color.",
+        "defaults": {
+          "dark": "#ffa500",
+          "light": "#c78202",
+          "highContrast": "#ffa500",
+          "highContrastLight": "#c78202"
+        }
+      },
+      {
+        "id": "foldercolorizer.purple",
+        "description": "Purple color.",
+        "defaults": {
+          "dark": "#9370db",
+          "light": "#9370db",
+          "highContrast": "#9370db",
+          "highContrastLight": "#800080"
+        }
+      },
+      {
+        "id": "foldercolorizer.violet",
+        "description": "Violet Color",
+        "defaults": {
+          "dark": "#ee82ee",
+          "light": "#ee82ee",
+          "highContrast": "#8b00ff",
+          "highContrastLight": "#ee82ee"
+        }
+      },
+      {
+        "id": "foldercolorizer.indigo",
+        "description": "Indigo color.",
+        "defaults": {
+          "dark": "#8379c5",
+          "light": "#4b0082",
+          "highContrast": "#4b0082",
+          "highContrastLight": "#6a5acd"
+        }
+      },
+      {
+        "id": "foldercolorizer.pink",
+        "description": "Pink color.",
+        "defaults": {
+          "dark": "#ffc0cb",
+          "light": "#c71585",
+          "highContrast": "#ffc0cb",
+          "highContrastLight": "#c71585"
+        }
+      },
+      {
+        "id": "foldercolorizer.brown",
+        "description": "Brown color.",
+        "defaults": {
+          "dark": "#d2691e",
+          "light": "#8b4513",
+          "highContrast": "#d2691e",
+          "highContrastLight": "#8b4513"
+        }
+      },
+      {
+        "id": "foldercolorizer.silver",
+        "description": "Silver color.",
+        "defaults": {
+          "dark": "#d3d3d3",
+          "light": "#c0c0c0",
+          "highContrast": "#d3d3d3",
+          "highContrastLight": "#c0c0c0"
+        }
+      },
+      {
+        "id": "foldercolorizer.gold",
+        "description": "Gold color.",
+        "defaults": {
+          "dark": "#fafad2",
+          "light": "#ffd700",
+          "highContrast": "#ffd700",
+          "highContrastLight": "#fafad2"
+        }
+      },
+      {
+        "id": "foldercolorizer.cyan",
+        "description": "Cyan color.",
+        "defaults": {
+          "light": "#e0ffff",
+          "dark": "#008b8b",
+          "highContrast": "#e0ffff",
+          "highContrastLight": "#008b8b"
+        }
+      },
+      {
+        "id": "foldercolorizer.magenta",
+        "description": "Magenta Color",
+        "defaults": {
+          "dark": "#fa9cfa",
+          "light": "#ff00ff",
+          "highContrast": "#fa9cfa",
+          "highContrastLight": "#ff00ff"
+        }
+      },
+      {
+        "id": "foldercolorizer.lime",
+        "description": "Lime color.",
+        "defaults": {
+          "dark": "#00ff00",
+          "light": "#32cd32",
+          "highContrast": "#00ff00",
+          "highContrastLight": "#32cd32"
+        }
+      },
+      {
+        "id": "foldercolorizer.teal",
+        "description": "Teal color.",
+        "defaults": {
+          "dark": "#20b2aa",
+          "light": "#008080",
+          "highContrast": "#20b2aa",
+          "highContrastLight": "#008080"
+        }
+      },
+      {
+        "id": "foldercolorizer.olive",
+        "description": "Olive color.",
+        "defaults": {
+          "dark": "#808000",
+          "light": "#808000",
+          "highContrast": "#808000",
+          "highContrastLight": "#808000"
+        }
+      },
+      {
+        "id": "foldercolorizer.beige",
+        "description": "Beige color.",
+        "defaults": {
+          "dark": "#F5F5DC",
+          "light": "#F5F5DC",
+          "highContrast": "#F5F5DC",
+          "highContrastLight": "#F5F5DC"
+        }
+      },
+      {
+        "id": "foldercolorizer.maroon",
+        "description": "Maroon color.",
+        "defaults": {
+          "dark": "#800000",
+          "light": "#b03060",
+          "highContrast": "#800000",
+          "highContrastLight": "#b03060"
+        }
+      },
+      {
+        "id": "foldercolorizer.gray",
+        "description": "Gray color.",
+        "defaults": {
+          "dark": "#808080",
+          "light": "#c0c0c0",
+          "highContrast": "#808080",
+          "highContrastLight": "#c0c0c0"
+        }
+      },
+      {
+        "id": "foldercolorizer.aqua",
+        "description": "Aqua color.",
+        "defaults": {
+          "dark": "#00ffff",
+          "light": "#afeeee",
+          "highContrast": "#00ffff",
+          "highContrastLight": "#afeeee"
+        }
+      }
+    ],
+    "configuration": {
+      "title": "FolderColorizer",
+      "properties": {
+        "folder-colorizer.pathColors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "folderPath": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              },
+              "badge": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "color",
+              "folderPath"
+            ]
+          },
+          "default": [],
+          "description": "Включает возможность Х"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.83.0",
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}
