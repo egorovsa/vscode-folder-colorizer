@@ -2,7 +2,7 @@
 
 folder-color is an extension for Visual Studio Code that enables you to easily and quickly set color and badge on any folder or file in your file manager for better organization and navigation of your projects.
 
-![vscode-folder-colorizer](https://github.com/egorovsa/vscode-folder-colorizer/blob/develop/GIF.gif?raw=true)
+![vscode-folder-colorizer](https://github.com/egorovsa/vscode-folder-colorizer/blob/main/GIF.gif?raw=true)
 
 ## Features
 
