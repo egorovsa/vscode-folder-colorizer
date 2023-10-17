@@ -56,18 +56,13 @@ const updateConfig = (pathColor: Partial<PathColors>, toRemove = false) => {
     (item) => item.folderPath === pathColor.folderPath
   );
 
-  console.log({ toRemove, existingPath });
-
   if (toRemove && existingPath) {
     const index = pathColors.indexOf(existingPath);
-
     pathColors.splice(index, 1);
-
     config.update("pathColors", pathColors);
   } else if (existingPath) {
     existingPath.color = pathColor.color || existingPath.color;
     existingPath.badge = pathColor.badge || existingPath.badge;
-
     config.update("pathColors", pathColors);
   } else {
     config.update("pathColors", [...pathColors, pathColor]);
@@ -78,16 +73,13 @@ const updateConfig = (pathColor: Partial<PathColors>, toRemove = false) => {
 
 const userPathLessPath = (path: string) => {
   const workspace = vscode?.workspace?.workspaceFolders?.[0];
-  console.log({ workspace });
-
-  let folderPath = path.replace(new RegExp(`.*\/(${workspace?.name})`), "$1");
-
-  return folderPath + "/";
+  return path.replace(new RegExp(`.*\/(${workspace?.name})`), "$1") + "/";
 };
 
 const registerContextMenu = (context: vscode.ExtensionContext) => {
   const packageJsonPath = path.join(__dirname, "..", "package.json");
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+
   const colors: { id: string; description: string }[] =
     packageJson.contributes.colors;
 
@@ -105,7 +97,9 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
           }
         )
         .then((selected) => {
-          if (!selected) return; // Если ничего не выбрано
+          if (!selected) {
+            return;
+          }
 
           updateConfig({
             folderPath: userPathLessPath(context.fsPath),
@@ -118,8 +112,6 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   let setBadgeDisposable = vscode.commands.registerCommand(
     "folder-colorizer.setBadge",
     function (context) {
-      console.log("setBadge", { context });
-
       vscode.window
         .showInputBox({
           prompt: "Set folder badge",
@@ -133,8 +125,9 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
           },
         })
         .then((value) => {
-          if (!value) return;
-          console.log({ value });
+          if (!value) {
+            return;
+          }
 
           updateConfig({
             folderPath: userPathLessPath(context.fsPath),
@@ -170,9 +163,8 @@ export function activate(context: vscode.ExtensionContext) {
     return;
   }
 
-  colorize();
-
   registerContextMenu(context);
+  colorize();
 
   vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration("folder-colorizer.pathColors")) {
