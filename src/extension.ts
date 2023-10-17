@@ -15,7 +15,7 @@ const colorize = () => {
     colorDisposable.dispose();
   }
 
-  let config = vscode.workspace.getConfiguration("folder-colorizer");
+  let config = vscode.workspace.getConfiguration("folder-color");
   let pathColors = config.get("pathColors") as PathColors[];
 
   let provider: vscode.FileDecorationProvider = {
@@ -49,7 +49,7 @@ const colorize = () => {
 };
 
 const updateConfig = (pathColor: Partial<PathColors>, toRemove = false) => {
-  const config = vscode.workspace.getConfiguration("folder-colorizer");
+  const config = vscode.workspace.getConfiguration("folder-color");
   const pathColors = [...((config.get("pathColors") as PathColors[]) || [])];
 
   const existingPath = pathColors?.find(
@@ -84,7 +84,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
     packageJson.contributes.colors;
 
   let setColorDisposable = vscode.commands.registerCommand(
-    "folder-colorizer.setColor",
+    "folder-color.setColor",
     function (context) {
       vscode.window
         .showQuickPick(
@@ -110,7 +110,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   );
 
   let setBadgeDisposable = vscode.commands.registerCommand(
-    "folder-colorizer.setBadge",
+    "folder-color.setBadge",
     function (context) {
       vscode.window
         .showInputBox({
@@ -138,7 +138,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   );
 
   let clearColorizerDisposable = vscode.commands.registerCommand(
-    "folder-colorizer.clearColorizer",
+    "folder-color.clearColorizer",
     function (context) {
       vscode.window;
 
@@ -167,7 +167,7 @@ export function activate(context: vscode.ExtensionContext) {
   colorize();
 
   vscode.workspace.onDidChangeConfiguration((event) => {
-    if (event.affectsConfiguration("folder-colorizer.pathColors")) {
+    if (event.affectsConfiguration("folder-color.pathColors")) {
       colorize();
     }
   });
