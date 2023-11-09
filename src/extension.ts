@@ -24,8 +24,10 @@ const colorize = () => {
       uri: vscode.Uri,
       token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.FileDecoration> => {
+      const projectPath = userPathLessPath(uri.fsPath);
+
       const matchingPaths = pathColors
-        .filter((item) => `${uri.fsPath}/`.includes(item.folderPath))
+        .filter((item) => projectPath.includes(item.folderPath))
         .sort((a, b) => b.folderPath.length - a.folderPath.length);
 
       const bestFit = matchingPaths[0];

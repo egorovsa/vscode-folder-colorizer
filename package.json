@@ -3,7 +3,7 @@
   "publisher": "SergeyEgorov",
   "displayName": "FolderColorizer",
   "description": "The Folder Colorizer extension for Visual Studio Code provides an easy and convenient way to change the color of folders in the file explorer",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": "https://github.com/egorovsa/vscode-folder-colorizer",
   "icon": "./icon.png",
   "author": {
