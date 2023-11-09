@@ -10,11 +10,6 @@
     "typescript.tsc.autoDetect": "off",
     "folder-color.pathColors": [
         {
-            "folderPath": "folder-colorizer/src/extension.ts/",
-            "color": "foldercolorizer.purple",
-            "badge": "as"
-        },
-        {
             "folderPath": "folder-colorizer/src/",
             "color": "foldercolorizer.brown"
         }

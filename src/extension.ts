@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { userPathLessPath } from "./utils/userPathLessPath";
 const fs = require("fs");
 const path = require("path");
 
@@ -69,11 +70,6 @@ const updateConfig = (pathColor: Partial<PathColors>, toRemove = false) => {
   }
 
   colorize();
-};
-
-const userPathLessPath = (path: string) => {
-  const workspace = vscode?.workspace?.workspaceFolders?.[0];
-  return path.replace(new RegExp(`.*\/(${workspace?.name})`), "$1") + "/";
 };
 
 const registerContextMenu = (context: vscode.ExtensionContext) => {
