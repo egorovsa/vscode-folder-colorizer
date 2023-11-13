@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { userPathLessPath } from "./utils/userPathLessPath";
 const fs = require("fs");
 const path = require("path");
+import emoji from "./emoji.json";
 
 interface PathColors {
   folderPath: string;
@@ -135,6 +136,34 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
     }
   );
 
+  let setEmojiBadgeDisposable = vscode.commands.registerCommand(
+    "folder-color.setEmojiBadge",
+    function (context) {
+      console.log(emoji);
+
+      vscode.window
+        .showQuickPick(
+          emoji.map(({ description, emoji }) => ({
+            label: description,
+            description: emoji,
+          })),
+          {
+            placeHolder: "Choose emoji badge: ",
+          }
+        )
+        .then((selected) => {
+          if (!selected) {
+            return;
+          }
+
+          updateConfig({
+            folderPath: userPathLessPath(context.fsPath),
+            badge: selected.description,
+          });
+        });
+    }
+  );
+
   let clearColorizerDisposable = vscode.commands.registerCommand(
     "folder-color.clearColorizer",
     function (context) {
@@ -151,10 +180,31 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
 
   context.subscriptions.push(setColorDisposable);
   context.subscriptions.push(setBadgeDisposable);
+  context.subscriptions.push(setEmojiBadgeDisposable);
   context.subscriptions.push(clearColorizerDisposable);
 };
 
+function checkIfItFirstTimeRun(context: vscode.ExtensionContext) {
+  const firstTimeRunFlag = "FOLDER_COLORIZER_FIRST_TIME_RUN1";
+
+  if (context.globalState.get(firstTimeRunFlag, true)) {
+    vscode.window
+      .showInformationMessage(
+        "To activate folder colors feature in VSCode, please reload the editor now.",
+        "Reload"
+      )
+      .then((selection) => {
+        if (selection === "Reload") {
+          vscode.commands.executeCommand("workbench.action.reloadWindow");
+        }
+      });
+
+    context.globalState.update(firstTimeRunFlag, false);
+  }
+}
+
 export function activate(context: vscode.ExtensionContext) {
+  checkIfItFirstTimeRun(context);
   const workspace = vscode?.workspace?.workspaceFolders?.[0];
 
   if (!workspace) {
