@@ -139,7 +139,6 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   let setEmojiBadgeDisposable = vscode.commands.registerCommand(
     "folder-color.setEmojiBadge",
     function (context) {
-      console.log(emoji);
 
       vscode.window
         .showQuickPick(
