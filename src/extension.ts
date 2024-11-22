@@ -1,11 +1,17 @@
-import * as vscode from "vscode";
-import { userPathLessPath } from "./utils/userPathLessPath";
 const fs = require("fs");
 const path = require("path");
+import * as vscode from "vscode";
+import { userPathLessPath } from "./utils/userPathLessPath";
 import emoji from "./emoji.json";
 
 interface PathColors {
   folderPath: string;
+  color?: string;
+  badge?: string;
+}
+
+interface PathsColors {
+  folderPath: string[];
   color?: string;
   badge?: string;
 }
@@ -32,9 +38,10 @@ const colorize = () => {
         .sort((a, b) => b.folderPath.length - a.folderPath.length);
 
       const bestFit = matchingPaths[0];
+      const bestFitColor = matchingPaths.find((item) => item.color)?.color;
 
-      const newColor = bestFit.color
-        ? new vscode.ThemeColor(bestFit.color)
+      const newColor = bestFitColor
+        ? new vscode.ThemeColor(bestFitColor)
         : undefined;
 
       if (bestFit) {
@@ -52,26 +59,31 @@ const colorize = () => {
   colorDisposable = vscode.window.registerFileDecorationProvider(provider);
 };
 
-const updateConfig = (pathColor: Partial<PathColors>, toRemove = false) => {
+const updateConfigNew = (pathColor: Partial<PathsColors>, toRemove = false) => {
   const config = vscode.workspace.getConfiguration("folder-color");
   const pathColors = [...((config.get("pathColors") as PathColors[]) || [])];
 
-  const existingPath = pathColors?.find(
-    (item) => item.folderPath === pathColor.folderPath
-  );
+  pathColor.folderPath?.forEach((pathItem) => {
+    const existingPath = pathColors?.find(
+      (item) => item.folderPath === pathItem
+    );
 
-  if (toRemove && existingPath) {
-    const index = pathColors.indexOf(existingPath);
-    pathColors.splice(index, 1);
-    config.update("pathColors", pathColors);
-  } else if (existingPath) {
-    existingPath.color = pathColor.color || existingPath.color;
-    existingPath.badge = pathColor.badge || existingPath.badge;
-    config.update("pathColors", pathColors);
-  } else {
-    config.update("pathColors", [...pathColors, pathColor]);
-  }
+    if (toRemove && existingPath) {
+      const index = pathColors.indexOf(existingPath);
+      pathColors.splice(index, 1);
+    } else if (existingPath) {
+      existingPath.color = pathColor.color || existingPath.color;
+      existingPath.badge = pathColor.badge || existingPath.badge;
+    } else {
+      pathColors.push({
+        folderPath: pathItem,
+        color: pathColor.color,
+        badge: pathColor.badge,
+      });
+    }
+  });
 
+  config.update("pathColors", pathColors);
   colorize();
 };
 
@@ -79,29 +91,32 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   const packageJsonPath = path.join(__dirname, "..", "package.json");
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
 
-  const colors: { id: string; description: string }[] =
-    packageJson.contributes.colors;
+  const colors: {
+    id: string;
+    description: string;
+    defaults: { light: string; dark: string };
+  }[] = packageJson.contributes.colors;
+
+  const options = colors.map(({ id, description, defaults }) => ({
+    label: description,
+    description: id,
+    iconPath: getIconPath(context, defaults.dark),
+  }));
 
   let setColorDisposable = vscode.commands.registerCommand(
     "folder-color.setColor",
-    function (context) {
+    (_, context2: vscode.Uri[]) => {
       vscode.window
-        .showQuickPick(
-          colors.map(({ id, description }) => ({
-            label: description,
-            description: id,
-          })),
-          {
-            placeHolder: "Choose color: ",
-          }
-        )
+        .showQuickPick(options, {
+          placeHolder: "Choose a color: ",
+        })
         .then((selected) => {
           if (!selected) {
             return;
           }
 
-          updateConfig({
-            folderPath: userPathLessPath(context.fsPath),
+          updateConfigNew({
+            folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
             color: selected.description,
           });
         });
@@ -110,7 +125,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
 
   let setBadgeDisposable = vscode.commands.registerCommand(
     "folder-color.setBadge",
-    function (context) {
+    function (_, context2: vscode.Uri[]) {
       vscode.window
         .showInputBox({
           prompt: "Set folder badge",
@@ -128,8 +143,8 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
             return;
           }
 
-          updateConfig({
-            folderPath: userPathLessPath(context.fsPath),
+          updateConfigNew({
+            folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
             badge: value,
           });
         });
@@ -138,13 +153,12 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
 
   let setEmojiBadgeDisposable = vscode.commands.registerCommand(
     "folder-color.setEmojiBadge",
-    function (context) {
-
+    function (_, context2: vscode.Uri[]) {
       vscode.window
         .showQuickPick(
           emoji.map(({ description, emoji }) => ({
-            label: description,
-            description: emoji,
+            label: emoji,
+            description,
           })),
           {
             placeHolder: "Choose emoji badge: ",
@@ -155,9 +169,9 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
             return;
           }
 
-          updateConfig({
-            folderPath: userPathLessPath(context.fsPath),
-            badge: selected.description,
+          updateConfigNew({
+            folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
+            badge: selected.label,
           });
         });
     }
@@ -165,12 +179,12 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
 
   let clearColorizerDisposable = vscode.commands.registerCommand(
     "folder-color.clearColorizer",
-    function (context) {
+    function (_, context2: vscode.Uri[]) {
       vscode.window;
 
-      updateConfig(
+      updateConfigNew(
         {
-          folderPath: userPathLessPath(context.fsPath),
+          folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
         },
         true
       );
@@ -182,6 +196,14 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   context.subscriptions.push(setEmojiBadgeDisposable);
   context.subscriptions.push(clearColorizerDisposable);
 };
+
+function getIconPath(context: vscode.ExtensionContext, color: string) {
+  const fileName = color.replace("#", "color_");
+
+  return vscode.Uri.file(
+    path.join(context.extensionPath, "resources", "icons", `${fileName}.svg`)
+  );
+}
 
 function checkIfItFirstTimeRun(context: vscode.ExtensionContext) {
   const firstTimeRunFlag = "FOLDER_COLORIZER_FIRST_TIME_RUN1";
