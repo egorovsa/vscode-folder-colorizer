@@ -1,20 +1,14 @@
-const fs = require("fs");
-const path = require("path");
 import * as vscode from "vscode";
-import { userPathLessPath } from "./utils/userPathLessPath";
-import emoji from "./emoji.json";
-
-interface PathColors {
-  folderPath: string;
-  color?: string;
-  badge?: string;
-}
-
-interface PathsColors {
-  folderPath: string[];
-  color?: string;
-  badge?: string;
-}
+import emoji from "./lists/emoji.json";
+import {
+  checkIfItFirstTimeRun,
+  getColorOptions,
+  getPathColors,
+  getUpdatedPathColors,
+  updateConfigPathColors,
+  userPathLessPath,
+} from "./utils";
+import { PathsColors } from "./types";
 
 let colorDisposable: vscode.Disposable;
 
@@ -23,8 +17,7 @@ const colorize = () => {
     colorDisposable.dispose();
   }
 
-  let config = vscode.workspace.getConfiguration("folder-color");
-  let pathColors = config.get("pathColors") as PathColors[];
+  let pathColors = getPathColors();
 
   let provider: vscode.FileDecorationProvider = {
     provideFileDecoration: (
@@ -59,53 +52,18 @@ const colorize = () => {
   colorDisposable = vscode.window.registerFileDecorationProvider(provider);
 };
 
-const updateConfigNew = (pathColor: Partial<PathsColors>, toRemove = false) => {
-  const config = vscode.workspace.getConfiguration("folder-color");
-  const pathColors = [...((config.get("pathColors") as PathColors[]) || [])];
-
-  pathColor.folderPath?.forEach((pathItem) => {
-    const existingPath = pathColors?.find(
-      (item) => item.folderPath === pathItem
-    );
-
-    if (toRemove && existingPath) {
-      const index = pathColors.indexOf(existingPath);
-      pathColors.splice(index, 1);
-    } else if (existingPath) {
-      existingPath.color = pathColor.color || existingPath.color;
-      existingPath.badge = pathColor.badge || existingPath.badge;
-    } else {
-      pathColors.push({
-        folderPath: pathItem,
-        color: pathColor.color,
-        badge: pathColor.badge,
-      });
-    }
-  });
-
-  config.update("pathColors", pathColors);
+const changeConfig = (pathColor: Partial<PathsColors>, toRemove = false) => {
+  const pathColors = getUpdatedPathColors(pathColor, toRemove);
+  updateConfigPathColors(pathColors);
   colorize();
 };
 
 const registerContextMenu = (context: vscode.ExtensionContext) => {
-  const packageJsonPath = path.join(__dirname, "..", "package.json");
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-
-  const colors: {
-    id: string;
-    description: string;
-    defaults: { light: string; dark: string };
-  }[] = packageJson.contributes.colors;
-
-  const options = colors.map(({ id, description, defaults }) => ({
-    label: description,
-    description: id,
-    iconPath: getIconPath(context, defaults.dark),
-  }));
-
   let setColorDisposable = vscode.commands.registerCommand(
     "folder-color.setColor",
     (_, context2: vscode.Uri[]) => {
+      const options = getColorOptions(context);
+
       vscode.window
         .showQuickPick(options, {
           placeHolder: "Choose a color: ",
@@ -115,7 +73,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
             return;
           }
 
-          updateConfigNew({
+          changeConfig({
             folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
             color: selected.description,
           });
@@ -143,7 +101,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
             return;
           }
 
-          updateConfigNew({
+          changeConfig({
             folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
             badge: value,
           });
@@ -169,7 +127,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
             return;
           }
 
-          updateConfigNew({
+          changeConfig({
             folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
             badge: selected.label,
           });
@@ -182,7 +140,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
     function (_, context2: vscode.Uri[]) {
       vscode.window;
 
-      updateConfigNew(
+      changeConfig(
         {
           folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
         },
@@ -196,33 +154,6 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   context.subscriptions.push(setEmojiBadgeDisposable);
   context.subscriptions.push(clearColorizerDisposable);
 };
-
-function getIconPath(context: vscode.ExtensionContext, color: string) {
-  const fileName = color.replace("#", "color_");
-
-  return vscode.Uri.file(
-    path.join(context.extensionPath, "resources", "icons", `${fileName}.svg`)
-  );
-}
-
-function checkIfItFirstTimeRun(context: vscode.ExtensionContext) {
-  const firstTimeRunFlag = "FOLDER_COLORIZER_FIRST_TIME_RUN1";
-
-  if (context.globalState.get(firstTimeRunFlag, true)) {
-    vscode.window
-      .showInformationMessage(
-        "To activate folder colors feature in VSCode, please reload the editor now.",
-        "Reload"
-      )
-      .then((selection) => {
-        if (selection === "Reload") {
-          vscode.commands.executeCommand("workbench.action.reloadWindow");
-        }
-      });
-
-    context.globalState.update(firstTimeRunFlag, false);
-  }
-}
 
 export function activate(context: vscode.ExtensionContext) {
   checkIfItFirstTimeRun(context);
