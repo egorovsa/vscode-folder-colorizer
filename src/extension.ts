@@ -32,17 +32,16 @@ const colorize = () => {
 
       const bestFit = matchingPaths[0];
       const bestFitColor = matchingPaths.find((item) => item.color)?.color;
+      const bestFitBadge = matchingPaths.find((item) => item.badge)?.badge;
 
       const newColor = bestFitColor
         ? new vscode.ThemeColor(bestFitColor)
         : undefined;
 
+      const newBadge = bestFitBadge ? bestFitBadge : undefined;
+
       if (bestFit) {
-        return new vscode.FileDecoration(
-          bestFit.badge || undefined,
-          "",
-          newColor
-        );
+        return new vscode.FileDecoration(newBadge, "", newColor);
       }
 
       return new vscode.FileDecoration();
