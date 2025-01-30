@@ -20,38 +20,96 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "jest",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "18.x",
+    "@types/vscode": "^1.83.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/jest": "^29.5.8",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1"
+  },
   "contributes": {
     "menus": {
       "explorer/context": [
         {
-          "submenu": "folderColorizer"
+          "when": "explorerResourceIsFolder == true",
+          "group": "folderColorizerFolders",
+          "alt": "markdown.showPreviewToSide",
+          "submenu": "folderColorizerFolders"
+        },
+        {
+          "when": "explorerResourceIsFolder == false",
+          "submenu": "folderColorizerFiles"
         }
       ],
-      "folderColorizer": [
+      "folderColorizerFolders": [
+        {
+          "command": "folder-color.setColor",
+          "group": "folderColorizerFolders1"
+        },
+        {
+          "command": "folder-color.setColorFolderOnly",
+          "group": "folderColorizerFolders1"
+        },
+        {
+          "command": "folder-color.setBadge",
+          "group": "folderColorizerFolders2"
+        },
+        {
+          "command": "folder-color.setEmojiBadge",
+          "group": "folderColorizerFolders2"
+        },
+        {
+          "command": "folder-color.clearColorizer"
+        }
+      ],
+      "folderColorizerFiles": [
         {
           "command": "folder-color.setColor"
         },
         {
-          "command": "folder-color.setBadge"
-        },
-        {
-          "command": "folder-color.setEmojiBadge"
-        },
-        {
-          "command": "folder-color.clearColorizer"
+          "command": "folder-color.setColorForExtension"
         }
       ]
     },
     "submenus": [
       {
-        "id": "folderColorizer",
-        "label": "Folder Colorizer"
+        "id": "folderColorizerFolders",
+        "label": "Folder color"
+      },
+      {
+        "id": "folderColorizerFiles",
+        "label": "Folder color"
       }
     ],
     "commands": [
       {
         "command": "folder-color.setColor",
-        "title": "Colorize"
+        "title": "Set color"
+      },
+      {
+        "command": "folder-color.setColorFolderOnly",
+        "title": "Set color (folder only)"
+      },
+      {
+        "command": "folder-color.setColorForExtension",
+        "title": "Set color (all files with the same extension)"
       },
       {
         "command": "folder-color.setBadge",
@@ -4026,29 +4084,5 @@
         }
       }
     }
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "jest",
-    "publish": "vsce publish"
-  },
-  "devDependencies": {
-    "@types/node": "18.x",
-    "@types/vscode": "^1.83.0",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
-    "@typescript-eslint/parser": "^6.7.3",
-    "@vscode/test-electron": "^2.3.4",
-    "eslint": "^8.50.0",
-    "glob": "^10.3.3",
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "@types/jest": "^29.5.8",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.1.1"
   }
 }
