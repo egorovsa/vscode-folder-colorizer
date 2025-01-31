@@ -10,9 +10,13 @@ export const checkPathColorOrBadge = (
     })
     .sort((a, b) => b.folderPath.length - a.folderPath.length);
 
-  const bestFit = matchingPaths[0];
-  const bestFitColor = !bestFit?.isForExtension && bestFit?.color;
-  const bestFitBadge = bestFit?.badge;
+  const bestFitColor = matchingPaths.find(
+    ({ color, isForExtension }) => color && !isForExtension
+  )?.color;
+
+  const bestFitBadge = matchingPaths.find(
+    ({ badge, isForExtension }) => badge && !isForExtension
+  )?.badge;
 
   return {
     badge: bestFitBadge || "",

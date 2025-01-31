@@ -99,6 +99,6 @@ describe("checkPathColorOrBadge", () => {
       "/this/is/thePath/Work/folder-colorizer",
       pathColors
     );
-    expect(result).toEqual({ color: "", badge: "W" });
+    expect(result).toEqual({ color: "", badge: "" });
   });
 });
