@@ -11,3 +11,8 @@ export interface PathsColors {
   badge?: string;
   isForExtension?: boolean;
 }
+
+export interface IFind {
+  color: string;
+  badge: string;
+}
