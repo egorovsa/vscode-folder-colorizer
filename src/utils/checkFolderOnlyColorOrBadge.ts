@@ -4,11 +4,8 @@ export const checkFolderOnlyColorOrBadge = (
   path: string,
   pathColors: PathColors[]
 ): IFind => {
-  const isFile = path.includes(".");
-  const fileExtension = isFile ? path.replace(/\/$/, "").split(".").pop() : "";
-
   const result = pathColors.find(
-    (item) => item.isForExtension && item.folderPath === fileExtension
+    (item) => item.isFolderOnly && item.folderPath === path
   );
 
   return {
