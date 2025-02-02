@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { changeConfig, userPathBasePathLess } from "../utils";
+import { patchConfig, userPathBasePathLess } from "../utils";
 import emoji from "../lists/emoji.json";
 
 export const setEmojiBadgeCommand = () => {
@@ -19,7 +19,7 @@ export const setEmojiBadgeCommand = () => {
           return;
         }
 
-        changeConfig({
+        patchConfig({
           folderPath: context2.map((item) => userPathBasePathLess(item.fsPath)),
           badge: selected.label,
         });

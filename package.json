@@ -49,8 +49,6 @@
       "explorer/context": [
         {
           "when": "explorerResourceIsFolder == true",
-          "group": "folderColorizerFolders",
-          "alt": "markdown.showPreviewToSide",
           "submenu": "folderColorizerFolders"
         },
         {
@@ -61,10 +59,6 @@
       "folderColorizerFolders": [
         {
           "command": "folder-color.setColor",
-          "group": "folderColorizerFolders1"
-        },
-        {
-          "command": "folder-color.setColorFolderOnly",
           "group": "folderColorizerFolders1"
         },
         {
@@ -81,10 +75,12 @@
       ],
       "folderColorizerFiles": [
         {
-          "command": "folder-color.setColor"
+          "command": "folder-color.setFilesColor",
+          "group": "folderColorizerFiles@1"
         },
         {
-          "command": "folder-color.setColorForExtension"
+          "command": "folder-color.setColorForExtension",
+          "group": "folderColorizerFiles@2"
         }
       ]
     },
@@ -104,12 +100,12 @@
         "title": "Set color"
       },
       {
-        "command": "folder-color.setColorFolderOnly",
-        "title": "Set color (folder only)"
+        "command": "folder-color.setFilesColor",
+        "title": "Set files color"
       },
       {
         "command": "folder-color.setColorForExtension",
-        "title": "Set color (all files with the same extension)"
+        "title": "Set color for extension"
       },
       {
         "command": "folder-color.setBadge",

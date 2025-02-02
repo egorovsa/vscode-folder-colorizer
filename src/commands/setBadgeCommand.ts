@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { changeConfig } from "../utils/changeConfig";
+import { patchConfig } from "../utils/patchConfig";
 import { userPathBasePathLess } from "../utils";
 
 export const setBadgeCommand = (_: vscode.Uri, uriArray: vscode.Uri[]) => {
@@ -20,7 +20,7 @@ export const setBadgeCommand = (_: vscode.Uri, uriArray: vscode.Uri[]) => {
         return;
       }
 
-      changeConfig({
+      patchConfig({
         folderPath: uriArray.map((item) => userPathBasePathLess(item.fsPath)),
         badge: value,
       });

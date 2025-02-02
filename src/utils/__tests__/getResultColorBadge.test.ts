@@ -1,4 +1,3 @@
-import { workspace } from "vscode";
 import { getResultColorBadge } from "../getResultColorBadge";
 import { PathColors } from "../../types";
 
@@ -7,7 +6,7 @@ jest.mock("vscode");
 const config: PathColors[] = [
   {
     folderPath: "BB/src/core/sagas/bbbe/measurement-unit-core-saga.ts/",
-    color: "foldercolorizer.color_3366ff",
+    color: "TSFILECOLOR",
   },
   {
     folderPath: "tsx",
@@ -19,6 +18,11 @@ const config: PathColors[] = [
     badge: "AA",
     color: "foldercolorizer.color_33cc33",
   },
+  {
+    folderPath: "json",
+    color: "JSONCOLOR",
+    isForExtension: true,
+  },
 ];
 
 describe("userPathLessPath", () => {
@@ -29,7 +33,15 @@ describe("userPathLessPath", () => {
         config
       )
     ).toEqual({
-      color: "foldercolorizer.color_3366ff",
+      color: "TSFILECOLOR",
+      badge: "AA",
+    });
+  });
+  it("should return color for json file", () => {
+    expect(
+      getResultColorBadge("BB/src/core/sagas/bbbe/fileconfig.json/", config)
+    ).toEqual({
+      color: "JSONCOLOR",
       badge: "AA",
     });
   });

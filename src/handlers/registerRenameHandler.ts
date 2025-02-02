@@ -1,7 +1,7 @@
 import vscode from "vscode";
 import {
   colorize,
-  getPathColors,
+  getConfigPathColors,
   updateConfigPathColors,
   userPathBasePathLess,
 } from "../utils";
@@ -22,7 +22,7 @@ export const registerRenameHandler = () => {
           return item;
         });
       },
-      [...getPathColors()]
+      [...getConfigPathColors()]
     );
 
     updateConfigPathColors(updatedPathColors);

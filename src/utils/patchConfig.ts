@@ -3,7 +3,7 @@ import { colorize } from "./colorize";
 import { getUpdatedPathColors } from "./getUpdatedPathColors";
 import { updateConfigPathColors } from "./useConfig";
 
-export const changeConfig = (
+export const patchConfig = (
   pathColor: Partial<PathsColors>,
   toRemove = false
 ) => {

@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { getColorOptions } from "../utils";
-import { changeConfig } from "../utils/changeConfig";
+import { patchConfig } from "../utils/patchConfig";
 
 export const setColorFileExtCommand = (context: vscode.ExtensionContext) => {
   return (uri: vscode.Uri, uriArray: vscode.Uri[]) => {
@@ -27,7 +27,7 @@ export const setColorFileExtCommand = (context: vscode.ExtensionContext) => {
           return;
         }
 
-        changeConfig({
+        patchConfig({
           folderPath: [fileExtension],
           color: selected.description,
           isForExtension: true,

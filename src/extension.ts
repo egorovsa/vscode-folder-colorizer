@@ -3,7 +3,7 @@ import emoji from "./lists/emoji.json";
 import {
   checkIfItFirstTimeRun,
   getColorOptions,
-  getPathColors,
+  getConfigPathColors,
   getUpdatedPathColors,
   updateConfigPathColors,
   userPathBasePathLess,

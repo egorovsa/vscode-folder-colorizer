@@ -1,14 +1,14 @@
 import * as vscode from "vscode";
-import { getPathColors } from "./useConfig";
+import { getConfigPathColors } from "./useConfig";
 import { userPathBasePathLess } from "./userPathLessPath";
-import { checkPathColorOrBadge } from "./checkPathColorOrBadge";
+import { getResultColorBadge } from "./getResultColorBadge";
 
 export let colorDisposable: vscode.Disposable;
 
 export const colorize = () => {
   colorDisposable?.dispose();
 
-  let pathColors = getPathColors();
+  let pathColors = getConfigPathColors();
 
   let provider: vscode.FileDecorationProvider = {
     provideFileDecoration: (
@@ -16,7 +16,7 @@ export const colorize = () => {
       token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.FileDecoration> => {
       const currentPath = userPathBasePathLess(uri.fsPath);
-      const { badge, color } = checkPathColorOrBadge(currentPath, pathColors);
+      const { badge, color } = getResultColorBadge(currentPath, pathColors);
 
       return new vscode.FileDecoration(
         badge,

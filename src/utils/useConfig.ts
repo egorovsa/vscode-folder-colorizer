@@ -5,7 +5,7 @@ export function getConfig() {
   return vscode.workspace.getConfiguration("folder-color");
 }
 
-export function getPathColors() {
+export function getConfigPathColors() {
   const config = getConfig();
   return (config.get("pathColors") || []) as PathColors[];
 }

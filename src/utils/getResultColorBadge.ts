@@ -6,30 +6,26 @@ import { checkPathColorOrBadge } from "./checkPathColorOrBadge";
 import { PathColors } from "../types";
 
 export const getResultColorBadge = (path: string, pathColors: PathColors[]) => {
-  const currentPath = userPathBasePathLess(path);
+  const currentPath = path;
   const fileData = checkFileColorOrBadge(currentPath, pathColors);
 
   if (fileData.color && fileData.badge) {
-    return new vscode.FileDecoration(
-      fileData.badge,
-      "",
-      new vscode.ThemeColor(fileData.color)
-    );
+    return {
+      badge: fileData.badge,
+      color: fileData.color,
+    };
   }
 
   const extFileData = checkFilesExtColorOrBadge(currentPath, pathColors);
 
   if (extFileData.color && extFileData.badge) {
-    return new vscode.FileDecoration(
-      fileData.badge || extFileData.badge,
-      "",
-      new vscode.ThemeColor(fileData.color || extFileData.color)
-    );
+    return {
+      badge: extFileData.badge,
+      color: extFileData.color,
+    };
   }
 
   const pathData = checkPathColorOrBadge(currentPath, pathColors);
-
-  console.log(pathData, currentPath);
 
   const badge = fileData.badge || extFileData.badge || pathData.badge;
   const color = fileData.color || extFileData.color || pathData.color;
