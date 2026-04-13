@@ -17,6 +17,7 @@ import {
 } from "./commands";
 import { setColorFileExtCommand } from "./commands/setColorFileExtCommand";
 import { registerRenameHandler } from "./handlers";
+import { registerControlPanelCommand } from "./panel/controlPanel";
 
 const changeConfig = (pathColor: Partial<PathsColors>, toRemove = false) => {
   const pathColors = getUpdatedPathColors(pathColor, toRemove);
@@ -63,6 +64,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
 
   // context.subscriptions.push(setColorForExtensionDisposable);
   context.subscriptions.push(clearColorizerDisposable);
+  context.subscriptions.push(registerControlPanelCommand(context));
 };
 
 export function activate(context: vscode.ExtensionContext) {

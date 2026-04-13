@@ -1,7 +1,6 @@
-import vscode from "vscode";
 import { checkFileColorOrBadge } from "./checkFileColorOrBadge";
-import { userPathBasePathLess } from "./userPathLessPath";
 import { checkFilesExtColorOrBadge } from "./checkFilesExtColorOrBadge";
+import { checkFolderOnlyColorOrBadge } from "./checkFolderOnlyColorOrBadge";
 import { checkPathColorOrBadge } from "./checkPathColorOrBadge";
 import { PathColors } from "../types";
 
@@ -17,6 +16,7 @@ export const getResultColorBadge = (path: string, pathColors: PathColors[]) => {
   }
 
   const extFileData = checkFilesExtColorOrBadge(currentPath, pathColors);
+  const folderOnlyData = checkFolderOnlyColorOrBadge(currentPath, pathColors);
 
   if (extFileData.color && extFileData.badge) {
     return {
@@ -27,8 +27,16 @@ export const getResultColorBadge = (path: string, pathColors: PathColors[]) => {
 
   const pathData = checkPathColorOrBadge(currentPath, pathColors);
 
-  const badge = fileData.badge || extFileData.badge || pathData.badge;
-  const color = fileData.color || extFileData.color || pathData.color;
+  const badge =
+    fileData.badge ||
+    extFileData.badge ||
+    folderOnlyData.badge ||
+    pathData.badge;
+  const color =
+    fileData.color ||
+    extFileData.color ||
+    folderOnlyData.color ||
+    pathData.color;
 
   return {
     badge,

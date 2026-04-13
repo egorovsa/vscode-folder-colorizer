@@ -23,6 +23,11 @@ const config: PathColors[] = [
     color: "JSONCOLOR",
     isForExtension: true,
   },
+  {
+    folderPath: "BB/src/core/sagas/bbbe/",
+    color: "FOLDER_ONLY_COLOR",
+    isFolderOnly: true,
+  },
 ];
 
 describe("userPathLessPath", () => {
@@ -42,6 +47,22 @@ describe("userPathLessPath", () => {
       getResultColorBadge("BB/src/core/sagas/bbbe/fileconfig.json/", config)
     ).toEqual({
       color: "JSONCOLOR",
+      badge: "AA",
+    });
+  });
+
+  it("should keep folder-only color only on exact folder path", () => {
+    expect(getResultColorBadge("BB/src/core/sagas/bbbe/", config)).toEqual({
+      color: "FOLDER_ONLY_COLOR",
+      badge: "AA",
+    });
+  });
+
+  it("should not apply folder-only color to child path", () => {
+    expect(
+      getResultColorBadge("BB/src/core/sagas/bbbe/child-folder/", config)
+    ).toEqual({
+      color: "foldercolorizer.color_33cc33",
       badge: "AA",
     });
   });
