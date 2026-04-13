@@ -3,7 +3,7 @@
   "publisher": "SergeyEgorov",
   "displayName": "Folder color",
   "description": "The folder color extension for Visual Studio Code provides an easy and convenient way to change the color of folders in the file explorer",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/egorovsa/vscode-folder-colorizer.git"
@@ -4112,6 +4112,14 @@
           "type": "boolean",
           "default": false,
           "description": "Save folder-color.pathColors in User settings instead of workspace settings."
+        },
+        "folder-color.favoriteColors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Favorite color IDs shown at the top of the color picker."
         }
       }
     }

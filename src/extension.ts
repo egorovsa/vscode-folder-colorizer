@@ -52,6 +52,13 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "folder-color.setFilesColor",
+      setColorFileExtCommand(context)
+    )
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand("folder-color.setBadge", setBadgeCommand)
   );
 

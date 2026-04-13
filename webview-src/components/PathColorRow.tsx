@@ -9,8 +9,10 @@ import { rowStyle } from "../UI/styles";
 interface PathColorRowProps {
   item: PathColorItem;
   colorOptions: ColorOption[];
+  favoriteColors: string[];
   placeholder: string;
   isExtensionRule?: boolean;
+  onToggleFavoriteColor: (colorId: string) => void;
   onUpdate: (patch: Partial<PathColorItem>) => void;
   onRemove: () => void;
 }
@@ -18,8 +20,10 @@ interface PathColorRowProps {
 export const PathColorRow = ({
   item,
   colorOptions,
+  favoriteColors,
   placeholder,
   isExtensionRule,
+  onToggleFavoriteColor,
   onUpdate,
   onRemove,
 }: PathColorRowProps) => {
@@ -33,6 +37,8 @@ export const PathColorRow = ({
       <ColorPicker
         options={colorOptions}
         value={item.color}
+        favoriteColors={favoriteColors}
+        onToggleFavoriteColor={onToggleFavoriteColor}
         onChange={(color) => onUpdate({ color })}
       />
       <TextInput

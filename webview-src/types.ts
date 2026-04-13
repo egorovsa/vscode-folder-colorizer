@@ -16,6 +16,7 @@ export interface StatePayload {
   pathColors: PathColorItem[];
   colorOptions: ColorOption[];
   useGlobalSettings: boolean;
+  favoriteColors: string[];
 }
 
 export type IncomingMessage = {
@@ -33,4 +34,5 @@ export type OutgoingMessage =
   | { type: "clearAll" }
   | { type: "savePathColors"; payload: PathColorItem[] }
   | { type: "pickPath" }
-  | { type: "setUseGlobalSettings"; useGlobalSettings: boolean };
+  | { type: "setUseGlobalSettings"; useGlobalSettings: boolean }
+  | { type: "setFavoriteColors"; favoriteColors: string[] };

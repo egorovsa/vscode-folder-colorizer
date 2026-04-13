@@ -4,8 +4,10 @@ import { PathColors } from "../types";
 import { colorize } from "../utils/colorize";
 import {
   getConfigPathColors,
+  getFavoriteColors,
   getUseGlobalSettings,
   updateConfigPathColors,
+  updateFavoriteColors,
   updateUseGlobalSettings,
 } from "../utils/useConfig";
 import { userPathBasePathLess } from "../utils/userPathLessPath";
@@ -16,9 +18,11 @@ interface ControlPanelMessage {
     | "savePathColors"
     | "clearAll"
     | "pickPath"
-    | "setUseGlobalSettings";
+    | "setUseGlobalSettings"
+    | "setFavoriteColors";
   payload?: PathColors[];
   useGlobalSettings?: boolean;
+  favoriteColors?: string[];
 }
 
 const getWebviewHtml = (
@@ -53,6 +57,7 @@ const postState = (webview: vscode.Webview) => {
     type: "state",
     payload: {
       pathColors: getConfigPathColors(),
+      favoriteColors: getFavoriteColors(),
       useGlobalSettings: getUseGlobalSettings(),
       colorOptions: colors.map(({ id, description, defaults }) => ({
         id,
@@ -88,7 +93,8 @@ export const registerControlPanelCommand = (
         (event) => {
           if (
             event.affectsConfiguration("folder-color.pathColors") ||
-            event.affectsConfiguration("folder-color.useGlobalSettings")
+            event.affectsConfiguration("folder-color.useGlobalSettings") ||
+            event.affectsConfiguration("folder-color.favoriteColors")
           ) {
             postState(panel.webview);
           }
@@ -113,6 +119,19 @@ export const registerControlPanelCommand = (
         }
 
         if (message.type === "clearAll") {
+          const confirmation = await vscode.window.showWarningMessage(
+            "Remove all folder color rules?",
+            {
+              modal: true,
+              detail: "This action clears all configured path colors and badges.",
+            },
+            "Clear all"
+          );
+
+          if (confirmation !== "Clear all") {
+            return;
+          }
+
           await updateConfigPathColors([]);
           colorize();
           postState(panel.webview);
@@ -144,6 +163,12 @@ export const registerControlPanelCommand = (
 
         if (message.type === "setUseGlobalSettings") {
           await updateUseGlobalSettings(Boolean(message.useGlobalSettings));
+          postState(panel.webview);
+          return;
+        }
+
+        if (message.type === "setFavoriteColors") {
+          await updateFavoriteColors(message.favoriteColors || []);
           postState(panel.webview);
         }
       });

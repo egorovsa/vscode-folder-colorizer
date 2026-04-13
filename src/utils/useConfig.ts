@@ -35,6 +35,22 @@ export function getConfigPathColors() {
   return inspected.workspaceValue || inspected.workspaceFolderValue || [];
 }
 
+export function getFavoriteColors() {
+  const config = getConfig();
+  const useGlobalSettings = getUseGlobalSettings();
+  const inspected = config.inspect<string[]>("favoriteColors");
+
+  if (!inspected) {
+    return [];
+  }
+
+  if (useGlobalSettings) {
+    return inspected.globalValue || [];
+  }
+
+  return inspected.workspaceValue || inspected.workspaceFolderValue || [];
+}
+
 export function updateConfigPathColors(
   pathColors: PathColors[]
 ): Thenable<void> {
@@ -45,4 +61,16 @@ export function updateConfigPathColors(
     : vscode.ConfigurationTarget.Workspace;
 
   return config.update("pathColors", pathColors, target);
+}
+
+export function updateFavoriteColors(
+  favoriteColors: string[]
+): Thenable<void> {
+  const config = getConfig();
+  const useGlobalSettings = getUseGlobalSettings();
+  const target = useGlobalSettings
+    ? vscode.ConfigurationTarget.Global
+    : vscode.ConfigurationTarget.Workspace;
+
+  return config.update("favoriteColors", favoriteColors, target);
 }

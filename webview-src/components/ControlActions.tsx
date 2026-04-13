@@ -22,7 +22,7 @@ export const ControlActions = ({
     <>
       <div style={actionRowStyle}>
         <Button label="Save" onClick={onSave} />
-        <Button label="Reload" onClick={onReload} variant="secondary" />
+      <Button label="Reset" onClick={onReload} variant="secondary" />
         <Button label="Clear all" onClick={onClearAll} variant="secondary" />
       </div>
       <label style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
