@@ -1,8 +1,6 @@
 name: Publish to Open VSX Registry
 
 on:
-  push:
-    branches: [main]
   release:
     types: [published]
 
