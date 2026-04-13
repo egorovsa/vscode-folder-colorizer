@@ -32,8 +32,8 @@ jobs:
         run: npm run package
       - name: Publish to Open VSX Registry
         if: ${{ env.OVSX_PAT != '' }}
-        run: npx ovsx publish --packagePath "*.vsix"
+        run: npx ovsx publish --packagePath ./*.vsix
 
       - name: Publish to VS Code Marketplace
         if: ${{ env.VSCE_PAT != '' }}
-        run: npx vsce publish --packagePath "*.vsix"
+        run: npx vsce publish --packagePath ./*.vsix
