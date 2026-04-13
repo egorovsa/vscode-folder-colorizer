@@ -7,6 +7,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,13 +29,9 @@ jobs:
       - name: Package extension
         run: npm run package
       - name: Publish to Open VSX Registry
-        if: ${{ secrets.OVSX_PAT != '' }}
+        if: ${{ env.OVSX_PAT != '' }}
         run: npx ovsx publish --packagePath "*.vsix"
-        env:
-          OVSX_PAT: ${{ secrets.OVSX_PAT }}
 
       - name: Publish to VS Code Marketplace
-        if: ${{ secrets.VSCE_PAT != '' }}
+        if: ${{ env.VSCE_PAT != '' }}
         run: npx vsce publish --packagePath "*.vsix"
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
