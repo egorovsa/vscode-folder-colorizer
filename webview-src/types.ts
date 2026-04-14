@@ -10,6 +10,7 @@ export interface ColorOption {
   id: string;
   description: string;
   hex: string;
+  group?: string;
 }
 
 export interface StatePayload {

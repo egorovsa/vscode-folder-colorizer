@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import colors from "../lists/colors.json";
 import { PathColors } from "../types";
 import { colorize } from "../utils/colorize";
+import { getContributedColors } from "../utils/getContributedColors";
 import {
   getConfigPathColors,
   getFavoriteColors,
@@ -52,17 +52,20 @@ const getWebviewHtml = (
 </html>`;
 };
 
-const postState = (webview: vscode.Webview) => {
+const postState = (webview: vscode.Webview, context: vscode.ExtensionContext) => {
+  const colors = getContributedColors(context);
+
   webview.postMessage({
     type: "state",
     payload: {
       pathColors: getConfigPathColors(),
       favoriteColors: getFavoriteColors(),
       useGlobalSettings: getUseGlobalSettings(),
-      colorOptions: colors.map(({ id, description, defaults }) => ({
+      colorOptions: colors.map(({ id, description, defaults, group }) => ({
         id,
         description,
         hex: defaults.dark,
+        group,
       })),
     },
   });
@@ -96,7 +99,7 @@ export const registerControlPanelCommand = (
             event.affectsConfiguration("folder-color.useGlobalSettings") ||
             event.affectsConfiguration("folder-color.favoriteColors")
           ) {
-            postState(panel.webview);
+            postState(panel.webview, context);
           }
         }
       );
@@ -107,14 +110,14 @@ export const registerControlPanelCommand = (
 
       panel.webview.onDidReceiveMessage(async (message: ControlPanelMessage) => {
         if (message.type === "getState") {
-          postState(panel.webview);
+          postState(panel.webview, context);
           return;
         }
 
         if (message.type === "savePathColors") {
           await updateConfigPathColors(message.payload || []);
           colorize();
-          postState(panel.webview);
+          postState(panel.webview, context);
           return;
         }
 
@@ -134,7 +137,7 @@ export const registerControlPanelCommand = (
 
           await updateConfigPathColors([]);
           colorize();
-          postState(panel.webview);
+          postState(panel.webview, context);
           return;
         }
 
@@ -163,17 +166,17 @@ export const registerControlPanelCommand = (
 
         if (message.type === "setUseGlobalSettings") {
           await updateUseGlobalSettings(Boolean(message.useGlobalSettings));
-          postState(panel.webview);
+          postState(panel.webview, context);
           return;
         }
 
         if (message.type === "setFavoriteColors") {
           await updateFavoriteColors(message.favoriteColors || []);
-          postState(panel.webview);
+          postState(panel.webview, context);
         }
       });
 
-      postState(panel.webview);
+      postState(panel.webview, context);
     }
   );
 };

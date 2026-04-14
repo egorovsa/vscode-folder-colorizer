@@ -1,0 +1,507 @@
+[
+  {
+    "group": "Blue",
+    "colors": [
+      { "color": "#000080", "name": "blue_004" },
+      { "color": "#0000ff", "name": "blue" },
+      {
+        "color": "#00005f",
+        "name": "fuzzy_wuzzy"
+      },
+      { "color": "#000087", "name": "dark_blue" },
+      { "color": "#0000af", "name": "carnation_pink" },
+      { "color": "#0000d7", "name": "medium_blue" },
+      { "color": "#005f87", "name": "orient" },
+      { "color": "#005faf", "name": "endeavour" },
+      { "color": "#005fd7", "name": "science_blue" },
+      { "color": "#005fff", "name": "blue_ribbon" },
+      { "color": "#0087af", "name": "deep_cerulean" },
+      { "color": "#0087d7", "name": "blue_cola" },
+      { "color": "#0087ff", "name": "azure" },
+      { "color": "#00afd7", "name": "cerulean" },
+      { "color": "#00afff", "name": "blue_bolt" },
+      { "color": "#00d7ff", "name": "vivid_sky_blue" },
+      {
+        "color": "#5f5f87",
+        "name": "comet"
+      },
+      { "color": "#5f5faf", "name": "dark_moderate_blue" },
+      { "color": "#5f5fd7", "name": "indigo" },
+      { "color": "#5f5fff", "name": "cornflower_blue" },
+      { "color": "#5f87af", "name": "hippie_blue" },
+      {
+        "color": "#5f87d7",
+        "name": "havelock_blue"
+      },
+      { "color": "#5f87ff", "name": "blueberry" },
+      {
+        "color": "#5fafaf",
+        "name": "crystal_blue"
+      },
+      {
+        "color": "#5fafd7",
+        "name": "aqua_pearl"
+      },
+      { "color": "#5fafff", "name": "blue_jeans" },
+      { "color": "#5fd7ff", "name": "maya_blue" },
+      {
+        "color": "#8787af",
+        "name": "cool_grey"
+      },
+      { "color": "#8787d7", "name": "chetwode_blue" },
+      { "color": "#8787ff", "name": "violets_are_blue" },
+      {
+        "color": "#87afd7",
+        "name": "light_cobalt_blue"
+      },
+      { "color": "#87afff", "name": "french_sky_blue" },
+      {
+        "color": "#afafd7",
+        "name": "grayish_blue"
+      },
+      { "color": "#afafff", "name": "maximum_blue_purple" },
+      { "color": "#afd7ff", "name": "fresh_air" },
+      { "color": "#d7d7ff", "name": "fog" }
+    ]
+  },
+  {
+    "group": "Brown",
+    "colors": [
+      { "color": "#875f00", "name": "brown" },
+      {
+        "color": "#875f5f",
+        "name": "copper_rose"
+      },
+      {
+        "color": "#af5f00",
+        "name": "dark_orange_brown_tone"
+      },
+      {
+        "color": "#af5f5f",
+        "name": "dark_moderate_red"
+      },
+      { "color": "#af8700", "name": "dark_goldenrod" },
+      {
+        "color": "#af875f",
+        "name": "bronze"
+      },
+      {
+        "color": "#af8787",
+        "name": "dark_grayish_red"
+      },
+      { "color": "#afaf00", "name": "buddha_gold" },
+      { "color": "#afaf87", "name": "dark_grayish_yellow" },
+      {
+        "color": "#d78700",
+        "name": "chocolate"
+      },
+      { "color": "#d7875f", "name": "copperfield" },
+      { "color": "#d7af00", "name": "goldenrod" },
+      { "color": "#d7af5f", "name": "earth_yellow" },
+      { "color": "#d7af87", "name": "slightly_desaturated_orange" },
+      {
+        "color": "#d7afaf",
+        "name": "clam_shell"
+      },
+      { "color": "#ffd787", "name": "grandis" },
+      { "color": "#ffd7af", "name": "caramel" }
+    ]
+  },
+  {
+    "group": "Cyan",
+    "colors": [
+      { "color": "#008080", "name": "cyan_006" },
+      { "color": "#00ffff", "name": "aqua" },
+      { "color": "#008787", "name": "teal" },
+      { "color": "#00afaf", "name": "bondi_blue" },
+      { "color": "#00d7d7", "name": "dark_turquoise" },
+      { "color": "#00ffff", "name": "aqua" },
+      {
+        "color": "#5f8787",
+        "name": "juniper"
+      },
+      {
+        "color": "#5fd7d7",
+        "name": "medium_turquoise"
+      },
+      { "color": "#5fffd7", "name": "aquamarine_086" },
+      { "color": "#5fffff", "name": "aquamarine_087" },
+      {
+        "color": "#87afaf",
+        "name": "dark_grayish_cyan"
+      },
+      { "color": "#87d7af", "name": "pearl_aqua" },
+      {
+        "color": "#87d7d7",
+        "name": "bermuda"
+      },
+      { "color": "#87d7ff", "name": "pale_cyan" },
+      { "color": "#87ffd7", "name": "aquamarine" },
+      {
+        "color": "#87ffff",
+        "name": "anakiwa"
+      },
+      { "color": "#afd7d7", "name": "crystal" },
+      { "color": "#afffd7", "name": "aero_blue" },
+      { "color": "#afffff", "name": "celeste" }
+    ]
+  },
+  {
+    "group": "Gray",
+    "colors": [
+      { "color": "#c0c0c0", "name": "argent" },
+      { "color": "#808080", "name": "gray" },
+      { "color": "#5f5f5f", "name": "scorpion" },
+      { "color": "#878787", "name": "taupe_gray" },
+      { "color": "#afafaf", "name": "silver_foil" },
+      { "color": "#d7d7d7", "name": "light_silver" },
+      { "color": "#080808", "name": "vampire_black" },
+      { "color": "#121212", "name": "chinese_black" },
+      { "color": "#1c1c1c", "name": "eerie_black" },
+      { "color": "#262626", "name": "raisin_black" },
+      { "color": "#303030", "name": "dark_charcoal" },
+      { "color": "#3a3a3a", "name": "black_olive" },
+      { "color": "#444444", "name": "outer_space" },
+      { "color": "#4e4e4e", "name": "dark_liver" },
+      { "color": "#585858", "name": "davys_grey" },
+      { "color": "#626262", "name": "granite_gray" },
+      { "color": "#6c6c6c", "name": "dim_gray" },
+      { "color": "#767676", "name": "boulder" },
+      { "color": "#808080", "name": "gray" },
+      { "color": "#8a8a8a", "name": "philippine_gray" },
+      { "color": "#949494", "name": "dusty_gray" },
+      { "color": "#9e9e9e", "name": "spanish_gray" },
+      { "color": "#a8a8a8", "name": "dark_gray" },
+      { "color": "#b2b2b2", "name": "philippine_silver" },
+      { "color": "#bcbcbc", "name": "silver" },
+      { "color": "#c6c6c6", "name": "silver_sand" },
+      { "color": "#d0d0d0", "name": "american_silver" },
+      { "color": "#dadada", "name": "alto" },
+      { "color": "#e4e4e4", "name": "mercury" },
+      {
+        "color": "#eeeeee",
+        "name": "bright_gray"
+      }
+    ]
+  },
+  {
+    "group": "Green",
+    "colors": [
+      { "color": "#008000", "name": "office_green" },
+      { "color": "#808000", "name": "yellow_003" },
+      {
+        "color": "#00ff00",
+        "name": "electric_green"
+      },
+      { "color": "#005f00", "name": "camarone" },
+      {
+        "color": "#005f5f",
+        "name": "bangladesh_green"
+      },
+      { "color": "#008700", "name": "ao" },
+      { "color": "#00875f", "name": "deep_sea" },
+      {
+        "color": "#00af00",
+        "name": "dark_lime_green"
+      },
+      { "color": "#00af5f", "name": "go_green" },
+      { "color": "#00af87", "name": "dark_cyan" },
+      { "color": "#00d700", "name": "strong_lime_green" },
+      { "color": "#00d75f", "name": "malachite" },
+      { "color": "#00d787", "name": "caribbean_green_042" },
+      { "color": "#00d7af", "name": "caribbean_green" },
+      {
+        "color": "#00ff00",
+        "name": "electric_green"
+      },
+      { "color": "#00ff5f", "name": "spring_green_047" },
+      { "color": "#00ff87", "name": "guppie_green" },
+      { "color": "#00ffaf", "name": "medium_spring_green" },
+      {
+        "color": "#00ffd7",
+        "name": "bright_turquoise"
+      },
+      {
+        "color": "#5f5f00",
+        "name": "bronze_yellow"
+      },
+      { "color": "#5f8700", "name": "avocado" },
+      {
+        "color": "#5f875f",
+        "name": "glade_green"
+      },
+      { "color": "#5faf00", "name": "dark_green" },
+      {
+        "color": "#5faf5f",
+        "name": "dark_moderate_lime_green"
+      },
+      { "color": "#5faf87", "name": "polished_pine" },
+      {
+        "color": "#5fd700",
+        "name": "alien_armpit"
+      },
+      { "color": "#5fd75f", "name": "moderate_lime_green" },
+      { "color": "#5fd787", "name": "caribbean_green_pearl" },
+      { "color": "#5fd7af", "name": "downy" },
+      { "color": "#5fff00", "name": "bright_green" },
+      { "color": "#5fff5f", "name": "light_lime_green" },
+      { "color": "#5fff87", "name": "very_light_malachite_green" },
+      { "color": "#5fffaf", "name": "medium_aquamarine" },
+      { "color": "#878700", "name": "dark_yellow_olive_tone" },
+      {
+        "color": "#87875f",
+        "name": "clay_creek"
+      },
+      { "color": "#87af00", "name": "apple_green" },
+      {
+        "color": "#87af5f",
+        "name": "asparagus"
+      },
+      {
+        "color": "#87af87",
+        "name": "bay_leaf"
+      },
+      { "color": "#87d700", "name": "pistachio" },
+      { "color": "#87d75f", "name": "mantis" },
+      {
+        "color": "#87d787",
+        "name": "pastel_green"
+      },
+      { "color": "#87ff00", "name": "chartreuse" },
+      { "color": "#87ff5f", "name": "light_green" },
+      { "color": "#87ff87", "name": "very_light_lime_green" },
+      { "color": "#87ffaf", "name": "mint_green_121" },
+      { "color": "#afaf5f", "name": "dark_moderate_yellow" },
+      {
+        "color": "#afd700",
+        "name": "rio_grande"
+      },
+      { "color": "#afd75f", "name": "conifer" },
+      {
+        "color": "#afd787",
+        "name": "feijoa"
+      },
+      {
+        "color": "#afd7af",
+        "name": "grayish_lime_green"
+      },
+      { "color": "#afff00", "name": "lime" },
+      { "color": "#afff5f", "name": "green_yellow" },
+      { "color": "#afff87", "name": "mint_green" },
+      { "color": "#afffaf", "name": "menthol" },
+      {
+        "color": "#d7d7af",
+        "name": "grayish_yellow"
+      },
+      { "color": "#d7ffaf", "name": "pale_green" },
+      {
+        "color": "#d7ffd7",
+        "name": "bei"
+      },
+      {
+        "color": "#d7ffff",
+        "name": "light_cyan"
+      }
+    ]
+  },
+  {
+    "group": "Orange",
+    "colors": [
+      { "color": "#d75f00", "name": "strong_orange" },
+      {
+        "color": "#ff5f00",
+        "name": "blaze_orange"
+      },
+      {
+        "color": "#ff8700",
+        "name": "american_orange"
+      },
+      { "color": "#ff875f", "name": "coral" },
+      {
+        "color": "#ffaf00",
+        "name": "chinese_yellow"
+      },
+      { "color": "#ffaf5f", "name": "light_orange" },
+      {
+        "color": "#ffaf87",
+        "name": "hit_pink"
+      },
+      { "color": "#ffafaf", "name": "melon" }
+    ]
+  },
+  {
+    "group": "Pink",
+    "colors": [
+      { "color": "#ff00ff", "name": "fuchsia" },
+      { "color": "#d70087", "name": "mexican_pink" },
+      { "color": "#d700af", "name": "hollywood_cerise_163" },
+      { "color": "#d75faf", "name": "hopbush" },
+      { "color": "#d75fff", "name": "heliotrope" },
+      {
+        "color": "#d78787",
+        "name": "my_pink"
+      },
+      {
+        "color": "#d787af",
+        "name": "can_can"
+      },
+      {
+        "color": "#d787d7",
+        "name": "deep_mauve"
+      },
+      { "color": "#d787ff", "name": "bright_lilac" },
+      {
+        "color": "#d7afd7",
+        "name": "grayish_magenta"
+      },
+      { "color": "#ff0087", "name": "bright_pink" },
+      {
+        "color": "#ff00af",
+        "name": "fashion_fuchsia"
+      },
+      { "color": "#ff00d7", "name": "pure_magenta" },
+      { "color": "#ff00ff", "name": "fuchsia" },
+      { "color": "#ff5faf", "name": "hot_pink" },
+      { "color": "#ff5fd7", "name": "light_deep_pink" },
+      { "color": "#ff5fff", "name": "pink_flamingo" },
+      { "color": "#ff87af", "name": "pink_salmon" },
+      {
+        "color": "#ff87d7",
+        "name": "lavender_rose"
+      },
+      {
+        "color": "#ff87ff",
+        "name": "blush_pink"
+      },
+      {
+        "color": "#ffafd7",
+        "name": "cotton_candy"
+      },
+      {
+        "color": "#ffafff",
+        "name": "pale_magenta"
+      },
+      {
+        "color": "#ffd7d7",
+        "name": "cosmos"
+      },
+      {
+        "color": "#ffd7ff",
+        "name": "bubble_gum"
+      }
+    ]
+  },
+  {
+    "group": "Purple_Violet_Magenta",
+    "colors": [
+      { "color": "#800080", "name": "patriarch" },
+      {
+        "color": "#5f005f",
+        "name": "imperial_purple"
+      },
+      { "color": "#5f0087", "name": "metallic_violet" },
+      { "color": "#5f00af", "name": "chinese_purple" },
+      { "color": "#5f00d7", "name": "electric_violet_056" },
+      { "color": "#5f00ff", "name": "electric_indigo" },
+      { "color": "#87005f", "name": "french_plum" },
+      { "color": "#870087", "name": "fresh_eggplant" },
+      { "color": "#8700af", "name": "purple" },
+      { "color": "#8700d7", "name": "french_violet" },
+      { "color": "#8700ff", "name": "electric_violet" },
+      {
+        "color": "#875f87",
+        "name": "chinese_violet"
+      },
+      {
+        "color": "#875faf",
+        "name": "dark_moderate_violet"
+      },
+      { "color": "#875fd7", "name": "medium_purple" },
+      { "color": "#875fff", "name": "blueberry_099" },
+      { "color": "#af0087", "name": "dark_magenta" },
+      { "color": "#af00af", "name": "heliotrope_magenta" },
+      { "color": "#af00d7", "name": "vivid_mulberry" },
+      { "color": "#af00ff", "name": "electric_purple" },
+      { "color": "#af5faf", "name": "dark_moderate_magenta" },
+      { "color": "#af5fd7", "name": "rich_lilac" },
+      { "color": "#af5fff", "name": "lavender_indigo" },
+      {
+        "color": "#af87af",
+        "name": "bouquet"
+      },
+      { "color": "#af87d7", "name": "lavender" },
+      { "color": "#af87ff", "name": "bright_lavender" },
+      { "color": "#d700d7", "name": "deep_magenta" },
+      { "color": "#d700ff", "name": "phlox" },
+      { "color": "#d75fd7", "name": "moderate_magenta" },
+      { "color": "#d7afff", "name": "mauve" }
+    ]
+  },
+  {
+    "group": "Red",
+    "colors": [
+      { "color": "#800000", "name": "maroon" },
+      { "color": "#ff0000", "name": "light_red" },
+      { "color": "#5f0000", "name": "blood_red" },
+      { "color": "#870000", "name": "deep_red" },
+      {
+        "color": "#af0000",
+        "name": "bright_red"
+      },
+      { "color": "#af005f", "name": "dark_pink" },
+      {
+        "color": "#af5f87",
+        "name": "dark_moderate_pink"
+      },
+      {
+        "color": "#d70000",
+        "name": "guardsman_red"
+      },
+      { "color": "#d7005f", "name": "razzmatazz" },
+      { "color": "#d75f5f", "name": "indian_red" },
+      { "color": "#d75f87", "name": "blush" },
+      { "color": "#ff0000", "name": "light_red" },
+      { "color": "#ff005f", "name": "vivid_raspberry" },
+      { "color": "#ff5f5f", "name": "bittersweet" },
+      { "color": "#ff5f87", "name": "strawberry" },
+      {
+        "color": "#ff8787",
+        "name": "tulip"
+      }
+    ]
+  },
+  {
+    "group": "White",
+    "colors": [
+      { "color": "#ffffff", "name": "light_white" },
+      { "color": "#ffffd7", "name": "cream" }
+    ]
+  },
+  {
+    "group": "Yellow",
+    "colors": [
+      { "color": "#ffff00", "name": "light_yellow_011" },
+      { "color": "#d7d700", "name": "citrine" },
+      {
+        "color": "#d7d75f",
+        "name": "chinese_green"
+      },
+      {
+        "color": "#d7d787",
+        "name": "de"
+      },
+      { "color": "#d7ff00", "name": "chartreuse_yellow" },
+      { "color": "#d7ff5f", "name": "canary" },
+      { "color": "#d7ff87", "name": "honeysuckle" },
+      { "color": "#ffd700", "name": "gold" },
+      { "color": "#ffd75f", "name": "dandelion" },
+      { "color": "#ffff00", "name": "light_yellow_011" },
+      { "color": "#ffff5f", "name": "laser_lemon" },
+      {
+        "color": "#ffff87",
+        "name": "dol"
+      },
+      { "color": "#ffffaf", "name": "calamansi" }
+    ]
+  }
+]

@@ -6,6 +6,17 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [2.1.0]
+
+- Major update: revamped extension color palette (xterm-256 based), regenerated color contributions, and rebuilt icon set.
+- Added color group metadata to contributed colors and grouped display in the Control Panel.
+- Replaced static color list JSON with runtime loading of contributed colors from `package.json`.
+- Added generation scripts for colors and package contributions under `scripts/generate-colors`.
+- Added publish workflow test step (`npm run test`) before packaging.
+- Refactored Control Panel webview logic by extracting `usePathRules` and `useFavoriteColorOptions` hooks.
+
+## [2.0.0]
+
 - Added a new Control Panel with Webview UI.
 - Added command `folder-color.openControlPanel` and menu entry to open the panel from Explorer context menu.
 - Added Path rules and Extension rules sections in the Control Panel.

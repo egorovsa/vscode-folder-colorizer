@@ -6,6 +6,7 @@ export * from "./checkPathColorOrBadge";
 export * from "./colorize";
 export * from "./filterIncludedPaths";
 export * from "./getColorOptions";
+export * from "./getContributedColors";
 export * from "./getIconPath";
 export * from "./getResultColorBadge";
 export * from "./getUpdatedPathColors";

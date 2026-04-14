@@ -7,6 +7,8 @@ import { postToExtension } from "./vscodeApi";
 import { Section } from "./UI/Section";
 import { Button } from "./UI/Button";
 import { pageStyle } from "./UI/styles";
+import { useFavoriteColorOptions } from "./hooks/useFavoriteColorOptions";
+import { usePathRules } from "./hooks/usePathRules";
 
 export const App = () => {
   const [pathColors, setPathColors] = React.useState([] as PathColorItem[]);
@@ -15,33 +17,19 @@ export const App = () => {
   const [favoriteColors, setFavoriteColors] = React.useState([] as string[]);
   const [favoriteFilter, setFavoriteFilter] = React.useState("");
 
-  const indexedRules = pathColors.map((item, index) => ({ item, index }));
-  const folderRules = indexedRules.filter((rule) => !rule.item.isForExtension);
-  const favoriteSet = new Set(
-    favoriteColors.map((item) => item.trim().toLowerCase())
-  );
-  const favoriteOptions = colorOptions.filter((option) =>
-    favoriteSet.has(option.id.trim().toLowerCase())
-  );
-  const regularOptions = colorOptions.filter(
-    (option) => !favoriteSet.has(option.id.trim().toLowerCase())
-  );
-  const filteredRegularOptions = regularOptions.filter((option) => {
-    const query = favoriteFilter.trim().toLowerCase();
-
-    if (!query) {
-      return true;
-    }
-
-    return (
-      option.description.toLowerCase().includes(query) ||
-      option.id.toLowerCase().includes(query)
+  const { folderRules, extensionRules } = usePathRules(pathColors);
+  
+  const { favoriteOptions, filteredRegularOptions, groupedRegularOptions } =
+    useFavoriteColorOptions(
+      colorOptions,
+      favoriteColors,
+      favoriteFilter
     );
-  });
 
-  const extensionRules = indexedRules.filter(
-    (rule) => rule.item.isForExtension
-  );
+  const isFavoriteOption = (optionId: string): boolean =>
+    favoriteColors.some(
+      (item) => item.trim().toLowerCase() === optionId.trim().toLowerCase()
+    );
 
   const updateRow = (index: number, patch: Partial<PathColorItem>): void => {
     setPathColors((prev) =>
@@ -120,7 +108,9 @@ export const App = () => {
     const normalized = colorId.trim().toLowerCase();
 
     setFavoriteColors((prev) => {
-      const exists = prev.some((item) => item.trim().toLowerCase() === normalized);
+      const exists = prev.some(
+        (item) => item.trim().toLowerCase() === normalized
+      );
       const next = exists
         ? prev.filter((item) => item.trim().toLowerCase() !== normalized)
         : [...prev, colorId];
@@ -273,16 +263,27 @@ export const App = () => {
           }}
         >
           <strong>Selected favorites</strong>
-          <Button label="Reset all" onClick={resetAllFavorites} variant="secondary" />
+          <Button
+            label="Reset all"
+            onClick={resetAllFavorites}
+            variant="secondary"
+          />
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "8px",
+            marginBottom: "12px",
+          }}
+        >
           {favoriteOptions.length === 0 ? (
-            <span style={{ opacity: 0.7 }}>No favorite colors selected yet.</span>
+            <span style={{ opacity: 0.7 }}>
+              No favorite colors selected yet.
+            </span>
           ) : null}
           {favoriteOptions.map((option) => {
-            const isFavorite = favoriteColors.some(
-              (item) => item.trim().toLowerCase() === option.id.trim().toLowerCase()
-            );
+            const isFavorite = isFavoriteOption(option.id);
 
             return (
               <button
@@ -328,7 +329,8 @@ export const App = () => {
             placeholder="Filter colors by name or id"
             style={{
               width: "100%",
-              border: "1px solid var(--vscode-input-border, rgba(127,127,127,0.35))",
+              border:
+                "1px solid var(--vscode-input-border, rgba(127,127,127,0.35))",
               borderRadius: "6px",
               padding: "7px 9px",
               color: "var(--vscode-input-foreground)",
@@ -336,48 +338,69 @@ export const App = () => {
             }}
           />
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {filteredRegularOptions.length === 0 ? (
             <span style={{ opacity: 0.7 }}>No colors match your filter.</span>
           ) : null}
-          {filteredRegularOptions.map((option) => {
-            const isFavorite = favoriteColors.some(
-              (item) => item.trim().toLowerCase() === option.id.trim().toLowerCase()
-            );
-
-            return (
-              <button
-                key={`regular-${option.id}`}
-                type="button"
-                onClick={() => toggleFavoriteColor(option.id)}
+          {groupedRegularOptions.map((group) => (
+            <div
+              key={`color-group-${group.name}`}
+              style={{
+                border: "1px solid rgba(127,127,127,0.25)",
+                borderRadius: "8px",
+                padding: "8px",
+              }}
+            >
+              <div
                 style={{
-                  border: "1px solid rgba(127,127,127,0.35)",
-                  borderRadius: "16px",
-                  padding: "4px 10px",
-                  background: isFavorite
-                    ? "rgba(127,127,127,0.25)"
-                    : "var(--vscode-editor-background)",
-                  color: "var(--vscode-foreground)",
-                  cursor: "pointer",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
+                  marginBottom: "8px",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  opacity: 0.85,
                 }}
               >
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    background: option.hex,
-                    border: "1px solid rgba(255,255,255,0.3)",
-                  }}
-                />
-                <span>{isFavorite ? "★" : "☆"}</span>
-                <span>{option.description}</span>
-              </button>
-            );
-          })}
+                {group.name}
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {group.options.map((option) => {
+                  const isFavorite = isFavoriteOption(option.id);
+
+                  return (
+                    <button
+                      key={`regular-${option.id}`}
+                      type="button"
+                      onClick={() => toggleFavoriteColor(option.id)}
+                      style={{
+                        border: "1px solid rgba(127,127,127,0.35)",
+                        borderRadius: "16px",
+                        padding: "4px 10px",
+                        background: isFavorite
+                          ? "rgba(127,127,127,0.25)"
+                          : "var(--vscode-editor-background)",
+                        color: "var(--vscode-foreground)",
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          background: option.hex,
+                          border: "1px solid rgba(255,255,255,0.3)",
+                        }}
+                      />
+                      <span>{isFavorite ? "★" : "☆"}</span>
+                      <span>{option.description}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </Section>
     </div>
