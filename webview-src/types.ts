@@ -3,6 +3,7 @@ export interface PathColorItem {
   color?: string;
   badge?: string;
   isForExtension?: boolean;
+  isForFile?: boolean;
   isFolderOnly?: boolean;
 }
 
@@ -28,6 +29,11 @@ export type IncomingMessage = {
   payload: {
     folderPath: string;
   };
+} | {
+  type: "filePicked";
+  payload: {
+    folderPath: string;
+  };
 };
 
 export type OutgoingMessage =
@@ -35,5 +41,6 @@ export type OutgoingMessage =
   | { type: "clearAll" }
   | { type: "savePathColors"; payload: PathColorItem[] }
   | { type: "pickPath" }
+  | { type: "pickFile" }
   | { type: "setUseGlobalSettings"; useGlobalSettings: boolean }
   | { type: "setFavoriteColors"; favoriteColors: string[] };

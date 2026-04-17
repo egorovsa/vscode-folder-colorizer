@@ -27,6 +27,12 @@ export const PathColorRow = ({
   onUpdate,
   onRemove,
 }: PathColorRowProps) => {
+  const normalizedPath = item.folderPath.replace(/[\\/]+$/, "");
+  const fileName = normalizedPath.split(/[\\/]/).pop() || "";
+  const extensionIndex = fileName.lastIndexOf(".");
+  const isFileRule = extensionIndex > 0;
+  const shouldShowFolderOnly = !isExtensionRule && !isFileRule;
+
   return (
     <div style={rowStyle}>
       <TextInput
@@ -47,7 +53,7 @@ export const PathColorRow = ({
         value={item.badge || ""}
         onChange={(value) => onUpdate({ badge: value })}
       />
-      {isExtensionRule ? (
+      {!shouldShowFolderOnly ? (
         <div />
       ) : (
         <label style={{ whiteSpace: "nowrap" }}>

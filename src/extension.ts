@@ -14,6 +14,7 @@ import {
   setBadgeCommand,
   setColorCommand,
   setEmojiBadgeCommand,
+  setFilesColorCommand,
 } from "./commands";
 import { setColorFileExtCommand } from "./commands/setColorFileExtCommand";
 import { registerRenameHandler } from "./handlers";
@@ -54,7 +55,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "folder-color.setFilesColor",
-      setColorFileExtCommand(context)
+      setFilesColorCommand(context)
     )
   );
 

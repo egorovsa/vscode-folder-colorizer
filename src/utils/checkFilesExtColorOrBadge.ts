@@ -1,11 +1,11 @@
 import { IFind, PathColors } from "../types";
+import { getFileExtension } from "./getFileExtension";
 
 export const checkFilesExtColorOrBadge = (
   path: string,
   pathColors: PathColors[]
 ): IFind => {
-  const isFile = path.includes(".");
-  const fileExtension = isFile ? path.replace(/\/$/, "").split(".").pop() : "";
+  const fileExtension = getFileExtension(path);
 
   const result = pathColors.find(
     (item) => item.isForExtension && item.folderPath === fileExtension

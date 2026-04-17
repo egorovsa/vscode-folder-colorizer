@@ -1,10 +1,20 @@
 import { IFind, PathColors } from "../types";
 
+const normalizePath = (value: string): string => value.replace(/[\\/]+$/, "");
+
+const isFilePath = (value: string): boolean => {
+  const normalized = normalizePath(value);
+  const fileName = normalized.split(/[\\/]/).pop() || "";
+  const extensionIndex = fileName.lastIndexOf(".");
+
+  return extensionIndex > 0;
+};
+
 export const checkFileColorOrBadge = (
   path: string,
   pathColors: PathColors[]
 ): IFind => {
-  const isFile = path.includes(".");
+  const isFile = isFilePath(path);
 
   if (!isFile) {
     return {
@@ -13,7 +23,10 @@ export const checkFileColorOrBadge = (
     };
   }
 
-  const result = pathColors.find((item) => item.folderPath === path);
+  const normalizedPath = normalizePath(path);
+  const result = pathColors.find(
+    (item) => normalizePath(item.folderPath) === normalizedPath
+  );
 
   return {
     badge: result?.badge || "",

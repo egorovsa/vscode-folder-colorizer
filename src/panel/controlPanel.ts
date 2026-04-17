@@ -18,6 +18,7 @@ interface ControlPanelMessage {
     | "savePathColors"
     | "clearAll"
     | "pickPath"
+    | "pickFile"
     | "setUseGlobalSettings"
     | "setFavoriteColors";
   payload?: PathColors[];
@@ -159,6 +160,29 @@ export const registerControlPanelCommand = (
             type: "pathPicked",
             payload: {
               folderPath: userPathBasePathLess(selectedPath.fsPath),
+            },
+          });
+          return;
+        }
+
+        if (message.type === "pickFile") {
+          const selected = await vscode.window.showOpenDialog({
+            canSelectMany: false,
+            canSelectFiles: true,
+            canSelectFolders: false,
+            openLabel: "Use selected file",
+          });
+
+          const selectedFile = selected?.[0];
+
+          if (!selectedFile) {
+            return;
+          }
+
+          panel.webview.postMessage({
+            type: "filePicked",
+            payload: {
+              folderPath: userPathBasePathLess(selectedFile.fsPath),
             },
           });
           return;

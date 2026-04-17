@@ -6,6 +6,16 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [2.1.1]
+- Fixed `folder-color.setFilesColor` to create exact file path rules instead of extension rules.
+- Added a dedicated `setFilesColor` command flow for file rules in Explorer context menu.
+- Fixed cross-platform extension parsing for command and matcher logic (including Windows paths).
+- Fixed file rule matching to work with and without trailing slash in stored paths.
+- Added new utility functions `normalizeFileRulePath` and `getFileExtension` with unit tests.
+- Added a dedicated **File rules** section in Control Panel (separate from Path and Extension rules).
+- Hidden `folder only` checkbox in Control Panel when editing file rules.
+- Added `Pick file` action in Control Panel, analogous to `Pick path`, using native file picker.
+
 ## [2.1.0]
 
 - Major update: revamped extension color palette (xterm-256 based), regenerated color contributions, and rebuilt icon set.

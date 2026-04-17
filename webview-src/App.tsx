@@ -17,8 +17,8 @@ export const App = () => {
   const [favoriteColors, setFavoriteColors] = React.useState([] as string[]);
   const [favoriteFilter, setFavoriteFilter] = React.useState("");
 
-  const { folderRules, extensionRules } = usePathRules(pathColors);
-  
+  const { folderRules, fileRules, extensionRules } = usePathRules(pathColors);
+
   const { favoriteOptions, filteredRegularOptions, groupedRegularOptions } =
     useFavoriteColorOptions(
       colorOptions,
@@ -59,10 +59,15 @@ export const App = () => {
     ]);
   };
 
+  const addFileRule = (): void => {
+    setPathColors((prev) => [...prev, { folderPath: "", isForFile: true }]);
+  };
+
   const save = (): void => {
     const sanitized = pathColors
       .map((item) => ({
         ...item,
+        isForFile: undefined,
         folderPath: item.isForExtension
           ? item.folderPath.trim().replace(/^\./, "").toLowerCase()
           : item.folderPath.trim(),
@@ -91,6 +96,14 @@ export const App = () => {
       setPathColors((prev) => [
         ...prev,
         { folderPath: message.payload.folderPath },
+      ]);
+      return;
+    }
+
+    if (message?.type === "filePicked") {
+      setPathColors((prev) => [
+        ...prev,
+        { folderPath: message.payload.folderPath, isForFile: true },
       ]);
     }
   };
@@ -181,6 +194,45 @@ export const App = () => {
               placeholder="folder path"
               onToggleFavoriteColor={toggleFavoriteColor}
               onUpdate={(patch) => updateRow(index, patch)}
+              onRemove={() => removeRow(index)}
+            />
+          </div>
+        ))}
+      </Section>
+
+      <Section
+        title="File rules"
+        description="Apply color and badge for exact file paths."
+      >
+        <div style={{ marginBottom: "8px" }}>
+          <Button
+            label="Add file rule"
+            onClick={addFileRule}
+            variant="secondary"
+          />
+          <span style={{ marginLeft: "8px" }}>
+            <Button
+              label="Pick file"
+              onClick={() => postToExtension({ type: "pickFile" })}
+              variant="secondary"
+            />
+          </span>
+        </div>
+        {fileRules.map(({ item, index }) => (
+          <div key={`file-${index}`}>
+            <PathColorRow
+              item={item}
+              colorOptions={colorOptions}
+              favoriteColors={favoriteColors}
+              placeholder="file path"
+              onToggleFavoriteColor={toggleFavoriteColor}
+              onUpdate={(patch) =>
+                updateRow(index, {
+                  ...patch,
+                  isForFile: true,
+                  isFolderOnly: false,
+                })
+              }
               onRemove={() => removeRow(index)}
             />
           </div>

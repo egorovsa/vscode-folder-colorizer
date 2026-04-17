@@ -26,6 +26,23 @@ describe("checkFilesExtColorOrBadge", () => {
       expect(result).toEqual({ badge: "TS", color: "blue" });
     });
 
+    it("should return the correct badge and color for Windows file path", () => {
+      const pathColors: PathColors[] = [
+        {
+          isForExtension: true,
+          folderPath: "ts",
+          badge: "TS",
+          color: "blue",
+        },
+      ];
+
+      const result = checkFilesExtColorOrBadge(
+        "folder-colorizer\\src\\file.ts\\",
+        pathColors
+      );
+      expect(result).toEqual({ badge: "TS", color: "blue" });
+    });
+
     it("should return empty badge and color if no matching extension is found", () => {
       const pathColors: PathColors[] = [
         {
@@ -56,6 +73,20 @@ describe("checkFilesExtColorOrBadge", () => {
         },
       ];
       const result = checkFilesExtColorOrBadge("folder/", pathColors);
+      expect(result).toEqual({ badge: "", color: "" });
+    });
+
+    it("should return empty badge and color for dotfile without extension", () => {
+      const pathColors: PathColors[] = [
+        {
+          isForExtension: true,
+          folderPath: "gitignore",
+          badge: "GI",
+          color: "yellow",
+        },
+      ];
+
+      const result = checkFilesExtColorOrBadge(".gitignore", pathColors);
       expect(result).toEqual({ badge: "", color: "" });
     });
   });

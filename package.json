@@ -3,7 +3,7 @@
   "publisher": "SergeyEgorov",
   "displayName": "Folder Color",
   "description": "Color folders and files in the VS Code Explorer, add badges and emoji labels, and organize project navigation with custom path rules",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/egorovsa/vscode-folder-colorizer.git"
