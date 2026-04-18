@@ -1,31 +1,49 @@
-import { IFind, PathColors } from "../types";
+import { IFind, PathColorRule } from "../types";
+import { isLikelyFilePathRule } from "./pathRuleKind";
 
 const normalizePath = (value: string): string => value.replace(/[\\/]+$/, "");
 
-const isFilePath = (value: string): boolean => {
-  const normalized = normalizePath(value);
-  const fileName = normalized.split(/[\\/]/).pop() || "";
-  const extensionIndex = fileName.lastIndexOf(".");
+export interface CheckFileColorOrBadgeOptions {
+  /**
+   * From `vscode.workspace.fs.stat` when decorating a URI: true = file, false = directory.
+   * When omitted, matching uses path-string heuristics only (backwards compatible).
+   */
+  entryIsFile?: boolean;
+}
 
-  return extensionIndex > 0;
+const ruleMatchesExactFileEntry = (
+  item: PathColorRule,
+  path: string,
+  normalizedPath: string,
+  entryIsFile: boolean | undefined
+): boolean => {
+  if (!item.filePath || item.extension || item.folderPath) {
+    return false;
+  }
+
+  if (normalizePath(item.filePath) !== normalizedPath) {
+    return false;
+  }
+
+  if (entryIsFile === true) {
+    return true;
+  }
+
+  if (entryIsFile === false) {
+    return false;
+  }
+
+  return isLikelyFilePathRule(path);
 };
 
 export const checkFileColorOrBadge = (
   path: string,
-  pathColors: PathColors[]
+  pathColors: PathColorRule[],
+  options?: CheckFileColorOrBadgeOptions
 ): IFind => {
-  const isFile = isFilePath(path);
-
-  if (!isFile) {
-    return {
-      badge: "",
-      color: "",
-    };
-  }
-
   const normalizedPath = normalizePath(path);
-  const result = pathColors.find(
-    (item) => normalizePath(item.folderPath) === normalizedPath
+  const result = pathColors.find((item) =>
+    ruleMatchesExactFileEntry(item, path, normalizedPath, options?.entryIsFile)
   );
 
   return {

@@ -6,39 +6,68 @@ import { TextInput } from "../UI/TextInput";
 import { Button } from "../UI/Button";
 import { rowStyle } from "../UI/styles";
 
+export type PathColorRowVariant = "folder" | "file" | "extension";
+
 interface PathColorRowProps {
+  variant: PathColorRowVariant;
   item: PathColorItem;
   colorOptions: ColorOption[];
   favoriteColors: string[];
   placeholder: string;
-  isExtensionRule?: boolean;
   onToggleFavoriteColor: (colorId: string) => void;
   onUpdate: (patch: Partial<PathColorItem>) => void;
   onRemove: () => void;
 }
 
 export const PathColorRow = ({
+  variant,
   item,
   colorOptions,
   favoriteColors,
   placeholder,
-  isExtensionRule,
   onToggleFavoriteColor,
   onUpdate,
   onRemove,
 }: PathColorRowProps) => {
-  const normalizedPath = item.folderPath.replace(/[\\/]+$/, "");
-  const fileName = normalizedPath.split(/[\\/]/).pop() || "";
-  const extensionIndex = fileName.lastIndexOf(".");
-  const isFileRule = extensionIndex > 0;
-  const shouldShowFolderOnly = !isExtensionRule && !isFileRule;
+  const pathValue =
+    variant === "folder"
+      ? item.folderPath || ""
+      : variant === "file"
+        ? item.filePath || ""
+        : item.extension || "";
+
+  const onPathChange = (value: string): void => {
+    if (variant === "folder") {
+      onUpdate({
+        folderPath: value,
+        filePath: undefined,
+        extension: undefined,
+      });
+      return;
+    }
+    if (variant === "file") {
+      onUpdate({
+        filePath: value,
+        folderPath: undefined,
+        extension: undefined,
+      });
+      return;
+    }
+    onUpdate({
+      extension: value.trim().replace(/^\./, "").toLowerCase(),
+      folderPath: undefined,
+      filePath: undefined,
+    });
+  };
+
+  const shouldShowFolderOnly = variant === "folder";
 
   return (
     <div style={rowStyle}>
       <TextInput
         placeholder={placeholder}
-        value={item.folderPath}
-        onChange={(value) => onUpdate({ folderPath: value })}
+        value={pathValue}
+        onChange={onPathChange}
       />
       <ColorPicker
         options={colorOptions}

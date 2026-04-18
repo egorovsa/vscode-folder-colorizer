@@ -30,9 +30,9 @@ export const setColorFileExtCommand = (context: vscode.ExtensionContext) => {
         }
 
         patchConfig({
-          folderPath: [fileExtension],
+          ruleType: "extension",
+          values: [fileExtension],
           color: selected.description,
-          isForExtension: true,
         });
       });
   };

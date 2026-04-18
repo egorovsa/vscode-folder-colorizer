@@ -6,6 +6,22 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [3.0.0]
+
+### Breaking
+
+- **`folder-color.pathColors` rule shape**: each array item must use **exactly one** of `folderPath`, `filePath`, or `extension` (plus optional `color`, `badge`, `isFolderOnly` on folder rules).
+- Removed `isForExtension` and `isForFile` flags from the persisted schema. Extension rules now use `{ "extension": "cs" }` instead of `{ "folderPath": "cs", "isForExtension": true }`. Exact file rules use `{ "filePath": "..." }`.
+- **Automatic migration on read**: legacy `pathColors` entries are converted in memory when the extension loads (see `migrateLegacyPathColors`). Saving from the Control Panel or commands writes the **new** format only.
+- **Manual migration** (if you edit JSON by hand): move extension tokens from `folderPath` + `isForExtension` to `extension`; move exact file paths from `folderPath` + `isForFile` to `filePath`.
+
+### Added / changed
+
+- File decoration uses `workspace.fs.stat` when possible so file vs folder is resolved reliably for exact `filePath` rules.
+- Control Panel rows are bound to `folderPath` / `filePath` / `extension` fields explicitly (no `isForExtension` / `isForFile` in the webview model).
+- `Pick file` posts `filePath` in the webview payload.
+- Continued support for dotfile extension tokens (for example `.htaccess` → `htaccess`) via `getFileExtension`.
+
 ## [2.1.1]
 - Fixed `folder-color.setFilesColor` to create exact file path rules instead of extension rules.
 - Added a dedicated `setFilesColor` command flow for file rules in Explorer context menu.

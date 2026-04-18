@@ -1,14 +1,11 @@
 import * as vscode from "vscode";
-import emoji from "./lists/emoji.json";
 import {
   checkIfItFirstTimeRun,
-  getColorOptions,
-  getConfigPathColors,
   getUpdatedPathColors,
   updateConfigPathColors,
   userPathBasePathLess,
 } from "./utils";
-import { PathColors, PathsColors } from "./types";
+import { PathsColorPatch } from "./types";
 import { colorDisposable, colorize } from "./utils/colorize";
 import {
   setBadgeCommand,
@@ -20,8 +17,8 @@ import { setColorFileExtCommand } from "./commands/setColorFileExtCommand";
 import { registerRenameHandler } from "./handlers";
 import { registerControlPanelCommand } from "./panel/controlPanel";
 
-const changeConfig = (pathColor: Partial<PathsColors>, toRemove = false) => {
-  const pathColors = getUpdatedPathColors(pathColor, toRemove);
+const changeConfig = (patch: PathsColorPatch, toRemove = false) => {
+  const pathColors = getUpdatedPathColors(patch, toRemove);
   updateConfigPathColors(pathColors);
   colorize();
 };
@@ -34,7 +31,7 @@ const registerContextMenu = (context: vscode.ExtensionContext) => {
       const folderPath = context2.map((item) =>
         userPathBasePathLess(item.fsPath)
       );
-      changeConfig({ folderPath }, true);
+      changeConfig({ ruleType: "folder", values: folderPath }, true);
     }
   );
 

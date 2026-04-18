@@ -1,70 +1,103 @@
-import { PathColors, PathsColors } from "../types";
+import { PathColorRule, PathsColorPatch } from "../types";
 import { getConfigPathColors } from "./useConfig";
 
-const getExistingIndex = (
-  pathItem: string,
-  configPathColors: PathColors[],
-  pathColor: Partial<PathsColors>
-) => {
-  return configPathColors?.findIndex((item) => {
-    const withFolderOnly =
-      (item.isFolderOnly || false) === (pathColor.isFolderOnly || false);
+const normalizeTrailingSlashes = (value: string): string =>
+  value.replace(/[\\/]+$/, "");
 
-    const withIsExtension =
-      (item.isForExtension || false) === (pathColor.isForExtension || false);
+const normalizeExtensionToken = (value: string): string =>
+  value.trim().replace(/^\./, "").toLowerCase();
 
-    return item.folderPath === pathItem && withFolderOnly && withIsExtension;
+const findRuleIndex = (
+  rules: PathColorRule[],
+  patch: PathsColorPatch,
+  valueItem: string
+): number => {
+  return rules.findIndex((item) => {
+    if (patch.ruleType === "extension") {
+      const token = normalizeExtensionToken(valueItem);
+      return (
+        Boolean(item.extension) &&
+        normalizeExtensionToken(item.extension || "") === token
+      );
+    }
+
+    if (patch.ruleType === "file") {
+      const normalizedValue = normalizeTrailingSlashes(valueItem);
+      return (
+        Boolean(item.filePath) &&
+        normalizeTrailingSlashes(item.filePath || "") === normalizedValue
+      );
+    }
+
+    if (patch.isFolderOnly !== undefined) {
+      const folderOnlyPatch = Boolean(patch.isFolderOnly);
+      const folderOnlyItem = Boolean(item.isFolderOnly);
+      if (folderOnlyPatch !== folderOnlyItem) {
+        return false;
+      }
+    }
+
+    return (
+      Boolean(item.folderPath) &&
+      !item.filePath &&
+      !item.extension &&
+      item.folderPath === valueItem
+    );
   });
 };
 
 export const getUpdatedPathColors = (
-  pathColor: Partial<PathsColors>,
+  patch: PathsColorPatch,
   toRemove = false
-): PathColors[] => {
-  const configPathColors = [...getConfigPathColors()];
+): PathColorRule[] => {
+  const configRules = [...getConfigPathColors()];
 
-  pathColor.folderPath?.forEach((pathItem) => {
-    const existingIndex = getExistingIndex(
-      pathItem,
-      configPathColors,
-      pathColor
-    );
+  patch.values.forEach((valueItem) => {
+    const existingIndex = findRuleIndex(configRules, patch, valueItem);
 
-    // REMOVE PATH
     if (existingIndex > -1 && toRemove) {
-      configPathColors.splice(existingIndex, 1);
+      configRules.splice(existingIndex, 1);
       return;
     }
 
-    // CREATE NEW PATH
-    if (existingIndex === -1) {
-      configPathColors.push({
-        folderPath: pathItem,
-        ...(pathColor.color && { color: pathColor.color }),
-        ...(pathColor.badge && { badge: pathColor.badge }),
-        ...(pathColor.isForExtension && {
-          isForExtension: pathColor.isForExtension,
-        }),
-        ...(pathColor.isFolderOnly && {
-          isFolderOnly: pathColor.isFolderOnly,
-        }),
+    if (existingIndex > -1 && !toRemove) {
+      const existing = configRules[existingIndex];
+      existing.color = patch.color || existing.color;
+      existing.badge = patch.badge || existing.badge;
+
+      if (patch.ruleType === "folder") {
+        existing.isFolderOnly = patch.isFolderOnly || existing.isFolderOnly;
+      }
+      return;
+    }
+
+    if (existingIndex === -1 && !toRemove) {
+      if (patch.ruleType === "extension") {
+        configRules.push({
+          extension: normalizeExtensionToken(valueItem),
+          ...(patch.color && { color: patch.color }),
+          ...(patch.badge && { badge: patch.badge }),
+        });
+        return;
+      }
+
+      if (patch.ruleType === "file") {
+        configRules.push({
+          filePath: normalizeTrailingSlashes(valueItem),
+          ...(patch.color && { color: patch.color }),
+          ...(patch.badge && { badge: patch.badge }),
+        });
+        return;
+      }
+
+      configRules.push({
+        folderPath: valueItem,
+        ...(patch.color && { color: patch.color }),
+        ...(patch.badge && { badge: patch.badge }),
+        ...(patch.isFolderOnly && { isFolderOnly: patch.isFolderOnly }),
       });
-
-      return;
     }
-
-    // UPDATE CURRENT PATH
-    const existingPath = configPathColors[existingIndex];
-
-    existingPath.color = pathColor.color || existingPath.color;
-    existingPath.badge = pathColor.badge || existingPath.badge;
-
-    existingPath.isForExtension =
-      pathColor.isForExtension || existingPath.isForExtension;
-
-    existingPath.isFolderOnly =
-      pathColor.isFolderOnly || existingPath.isFolderOnly;
   });
 
-  return configPathColors;
+  return configRules;
 };

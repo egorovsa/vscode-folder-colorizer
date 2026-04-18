@@ -53,27 +53,46 @@ export const App = () => {
   };
 
   const addExtensionRule = (): void => {
-    setPathColors((prev) => [
-      ...prev,
-      { folderPath: "", isForExtension: true },
-    ]);
+    setPathColors((prev) => [...prev, { extension: "" }]);
   };
 
   const addFileRule = (): void => {
-    setPathColors((prev) => [...prev, { folderPath: "", isForFile: true }]);
+    setPathColors((prev) => [...prev, { filePath: "" }]);
   };
 
   const save = (): void => {
     const sanitized = pathColors
-      .map((item) => ({
-        ...item,
-        isForFile: undefined,
-        folderPath: item.isForExtension
-          ? item.folderPath.trim().replace(/^\./, "").toLowerCase()
-          : item.folderPath.trim(),
-        badge: item.badge?.trim() || undefined,
-      }))
-      .filter((item) => item.folderPath.length > 0);
+      .map((item): PathColorItem | null => {
+        const badge = item.badge?.trim() || undefined;
+        if (item.extension !== undefined) {
+          const extension = item.extension.trim().replace(/^\./, "").toLowerCase();
+          if (!extension) {
+            return null;
+          }
+          return { extension, color: item.color, badge };
+        }
+        if (item.filePath !== undefined) {
+          const filePath = item.filePath.trim();
+          if (!filePath) {
+            return null;
+          }
+          return { filePath, color: item.color, badge };
+        }
+        if (item.folderPath !== undefined) {
+          const folderPath = item.folderPath.trim();
+          if (!folderPath) {
+            return null;
+          }
+          return {
+            folderPath,
+            color: item.color,
+            badge,
+            ...(item.isFolderOnly ? { isFolderOnly: true } : {}),
+          };
+        }
+        return null;
+      })
+      .filter((row): row is PathColorItem => row !== null);
 
     postToExtension({
       type: "savePathColors",
@@ -103,7 +122,7 @@ export const App = () => {
     if (message?.type === "filePicked") {
       setPathColors((prev) => [
         ...prev,
-        { folderPath: message.payload.folderPath, isForFile: true },
+        { filePath: message.payload.filePath },
       ]);
     }
   };
@@ -188,6 +207,7 @@ export const App = () => {
         {folderRules.map(({ item, index }) => (
           <div key={`path-${index}`}>
             <PathColorRow
+              variant="folder"
               item={item}
               colorOptions={colorOptions}
               favoriteColors={favoriteColors}
@@ -221,18 +241,13 @@ export const App = () => {
         {fileRules.map(({ item, index }) => (
           <div key={`file-${index}`}>
             <PathColorRow
+              variant="file"
               item={item}
               colorOptions={colorOptions}
               favoriteColors={favoriteColors}
               placeholder="file path"
               onToggleFavoriteColor={toggleFavoriteColor}
-              onUpdate={(patch) =>
-                updateRow(index, {
-                  ...patch,
-                  isForFile: true,
-                  isFolderOnly: false,
-                })
-              }
+              onUpdate={(patch) => updateRow(index, patch)}
               onRemove={() => removeRow(index)}
             />
           </div>
@@ -253,19 +268,13 @@ export const App = () => {
         {extensionRules.map(({ item, index }) => (
           <div key={`ext-${index}`}>
             <PathColorRow
+              variant="extension"
               item={item}
               colorOptions={colorOptions}
               favoriteColors={favoriteColors}
               placeholder="file extension"
-              isExtensionRule={true}
               onToggleFavoriteColor={toggleFavoriteColor}
-              onUpdate={(patch) =>
-                updateRow(index, {
-                  ...patch,
-                  isForExtension: true,
-                  isFolderOnly: false,
-                })
-              }
+              onUpdate={(patch) => updateRow(index, patch)}
               onRemove={() => removeRow(index)}
             />
           </div>
@@ -296,9 +305,10 @@ export const App = () => {
           </li>
         </ol>
         <p style={{ marginTop: "10px", marginBottom: 0, opacity: 0.85 }}>
-          Notes: extension values are normalized (for example <code>.TS</code>{" "}
-          becomes
-          <code> ts</code>) on save.
+          Notes: each rule uses exactly one of <code>folderPath</code>,{" "}
+          <code>filePath</code>, or <code>extension</code>. Extension tokens are
+          normalized on save (for example <code>.TS</code> becomes{" "}
+          <code>ts</code>).
         </p>
       </Section>
 

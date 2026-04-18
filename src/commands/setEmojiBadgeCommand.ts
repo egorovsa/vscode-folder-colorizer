@@ -6,9 +6,9 @@ export const setEmojiBadgeCommand = () => {
   return (_: vscode.Uri, context2: vscode.Uri[]) => {
     vscode.window
       .showQuickPick(
-        emoji.map(({ description, emoji }) => ({
-          label: emoji,
-          description,
+        emoji.map((entry) => ({
+          label: entry.emoji,
+          description: entry.description,
         })),
         {
           placeHolder: "Choose emoji badge: ",
@@ -20,7 +20,8 @@ export const setEmojiBadgeCommand = () => {
         }
 
         patchConfig({
-          folderPath: context2.map((item) => userPathBasePathLess(item.fsPath)),
+          ruleType: "folder",
+          values: context2.map((item) => userPathBasePathLess(item.fsPath)),
           badge: selected.label,
         });
       });

@@ -1,23 +1,20 @@
-import { workspace } from "vscode";
 import { checkPathColorOrBadge } from "../checkPathColorOrBadge";
-import { PathColors } from "../../types";
+import { PathColorRule } from "../../types";
 
 jest.mock("vscode");
 
 describe("checkPathColorOrBadge", () => {
   it("should return the correct color and badge for a given path", () => {
-    const pathColors: PathColors[] = [
+    const pathColors: PathColorRule[] = [
       {
         folderPath: "/path/that/have/folder/",
         color: "red",
         badge: "W",
-        isForExtension: false,
       },
       {
         folderPath: "/path/that/have/file.ts/",
         color: "blue",
         badge: "FC",
-        isForExtension: false,
       },
     ];
 
@@ -41,12 +38,11 @@ describe("checkPathColorOrBadge", () => {
   });
 
   it("should return an empty color and badge if no matching path is found", () => {
-    const pathColors: PathColors[] = [
+    const pathColors: PathColorRule[] = [
       {
         folderPath: "/path/that/have/folder1/",
         color: "red",
         badge: "W",
-        isForExtension: false,
       },
     ];
     const result = checkPathColorOrBadge(
@@ -57,24 +53,21 @@ describe("checkPathColorOrBadge", () => {
   });
 
   it("should return the longest matching path's color and badge", () => {
-    const pathColors: PathColors[] = [
+    const pathColors: PathColorRule[] = [
       {
         folderPath: "/this/is/thePath",
         color: "green",
         badge: "U",
-        isForExtension: false,
       },
       {
         folderPath: "/this/is/thePath/Work",
         color: "red",
         badge: "W",
-        isForExtension: false,
       },
       {
         folderPath: "/this/is/thePath/Work/folder-colorizer",
         color: "blue",
         badge: "FC",
-        isForExtension: false,
       },
     ];
 
@@ -86,13 +79,50 @@ describe("checkPathColorOrBadge", () => {
     ).toEqual({ color: "blue", badge: "FC" });
   });
 
-  it("should return an empty color if the best fit is for extension", () => {
-    const pathColors: PathColors[] = [
+  it("should ignore extension rules for path prefix matching", () => {
+    const pathColors: PathColorRule[] = [
       {
-        folderPath: "/this/is/thePath/Work",
+        extension: "ts",
+        color: "red",
+        badge: "H",
+      },
+      {
+        folderPath: "live-tree-unity/.vscode/",
+        color: "blue",
+        badge: "V",
+      },
+    ];
+
+    expect(
+      checkPathColorOrBadge("live-tree-unity/.vscode/htaccess", pathColors)
+    ).toEqual({ color: "blue", badge: "V" });
+  });
+
+  it("should ignore filePath rules for path prefix matching", () => {
+    const pathColors: PathColorRule[] = [
+      {
+        filePath: "live-tree-unity/.vscode/htaccess",
+        color: "red",
+        badge: "H",
+      },
+      {
+        folderPath: "live-tree-unity/.vscode/",
+        color: "blue",
+        badge: "V",
+      },
+    ];
+
+    expect(
+      checkPathColorOrBadge("live-tree-unity/.vscode/htaccess", pathColors)
+    ).toEqual({ color: "blue", badge: "V" });
+  });
+
+  it("should return an empty color if the best fit is for extension-only rows", () => {
+    const pathColors: PathColorRule[] = [
+      {
+        extension: "tsx",
         color: "red",
         badge: "W",
-        isForExtension: true,
       },
     ];
     const result = checkPathColorOrBadge(

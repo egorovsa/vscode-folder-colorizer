@@ -21,7 +21,8 @@ export const setBadgeCommand = (_: vscode.Uri, uriArray: vscode.Uri[]) => {
       }
 
       patchConfig({
-        folderPath: uriArray.map((item) => userPathBasePathLess(item.fsPath)),
+        ruleType: "folder",
+        values: uriArray.map((item) => userPathBasePathLess(item.fsPath)),
         badge: value,
       });
     });

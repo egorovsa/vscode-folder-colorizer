@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
-import { PathColors } from "../types";
+import { PathColorRule } from "../types";
+import { migrateLegacyPathColors } from "./migrateLegacyPathColors";
 
 export function getConfig() {
   return vscode.workspace.getConfiguration("folder-color");
@@ -19,20 +20,20 @@ export function updateUseGlobalSettings(value: boolean): Thenable<void> {
   );
 }
 
-export function getConfigPathColors() {
+export function getConfigPathColors(): PathColorRule[] {
   const config = getConfig();
   const useGlobalSettings = getUseGlobalSettings();
-  const inspected = config.inspect<PathColors[]>("pathColors");
+  const inspected = config.inspect<unknown[]>("pathColors");
 
   if (!inspected) {
     return [];
   }
 
-  if (useGlobalSettings) {
-    return inspected.globalValue || [];
-  }
+  const raw = useGlobalSettings
+    ? inspected.globalValue
+    : inspected.workspaceValue || inspected.workspaceFolderValue;
 
-  return inspected.workspaceValue || inspected.workspaceFolderValue || [];
+  return migrateLegacyPathColors(raw || []);
 }
 
 export function getFavoriteColors() {
@@ -52,7 +53,7 @@ export function getFavoriteColors() {
 }
 
 export function updateConfigPathColors(
-  pathColors: PathColors[]
+  pathColors: PathColorRule[]
 ): Thenable<void> {
   const config = getConfig();
   const useGlobalSettings = getUseGlobalSettings();

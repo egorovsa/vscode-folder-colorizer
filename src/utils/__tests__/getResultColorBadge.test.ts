@@ -1,17 +1,16 @@
 import { getResultColorBadge } from "../getResultColorBadge";
-import { PathColors } from "../../types";
+import { PathColorRule } from "../../types";
 
 jest.mock("vscode");
 
-const config: PathColors[] = [
+const config: PathColorRule[] = [
   {
-    folderPath: "BB/src/core/sagas/bbbe/measurement-unit-core-saga.ts/",
+    filePath: "BB/src/core/sagas/bbbe/measurement-unit-core-saga.ts/",
     color: "TSFILECOLOR",
   },
   {
-    folderPath: "tsx",
+    extension: "tsx",
     color: "foldercolorizer.color_66ccff",
-    isForExtension: true,
   },
   {
     folderPath: "BB/src/core/sagas/bbbe/",
@@ -19,9 +18,8 @@ const config: PathColors[] = [
     color: "foldercolorizer.color_33cc33",
   },
   {
-    folderPath: "json",
+    extension: "json",
     color: "JSONCOLOR",
-    isForExtension: true,
   },
   {
     folderPath: "BB/src/core/sagas/bbbe/",
@@ -30,7 +28,7 @@ const config: PathColors[] = [
   },
 ];
 
-describe("userPathLessPath", () => {
+describe("getResultColorBadge", () => {
   it("should return color from one path and badge from another", () => {
     expect(
       getResultColorBadge(
@@ -48,6 +46,23 @@ describe("userPathLessPath", () => {
     ).toEqual({
       color: "JSONCOLOR",
       badge: "AA",
+    });
+  });
+
+  it("should apply filePath exact rule when entry is a file", () => {
+    const pathColors: PathColorRule[] = [
+      {
+        filePath: "live-tree-unity/.vscode/htaccess",
+        color: "FILECOLOR",
+      },
+    ];
+    expect(
+      getResultColorBadge("live-tree-unity/.vscode/htaccess", pathColors, {
+        entryIsFile: true,
+      })
+    ).toEqual({
+      color: "FILECOLOR",
+      badge: "",
     });
   });
 

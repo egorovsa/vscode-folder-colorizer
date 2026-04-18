@@ -2,6 +2,22 @@
 
 Folder color is an extension for Visual Studio Code that enables you to easily and quickly set colors and badges on any folder or file in your file manager for better organization and navigation of your projects.
 
+## Breaking changes (3.0.0)
+
+The `folder-color.pathColors` setting uses a **new rule shape**. Each rule must set **exactly one** of:
+
+- **`folderPath`** — folder / path-prefix rule (optional `isFolderOnly` for “this folder only”).
+- **`filePath`** — exact workspace-relative file path.
+- **`extension`** — extension token **without** a leading dot (for example `"cs"`, `"ts"`).
+
+Legacy fields **`isForExtension`** and **`isForFile`** are no longer stored. Extension rules used to look like `{ "folderPath": "ts", "isForExtension": true }`; they are now `{ "extension": "ts" }`. Exact file rules use `{ "filePath": "path/to/File.cs" }` instead of a file path packed into `folderPath` with flags.
+
+**Runtime:** On load, the extension still understands **old** JSON and normalizes it in memory (`migrateLegacyPathColors`). **On save** (Control Panel **Save**, context-menu color/badge actions, and so on), settings are written back in the **new** format only.
+
+**If you never hand-edited `pathColors` in JSON:** open the **Folder Color – Control Panel**, then click **Save** (you do not need to change anything). That rewrites `folder-color.pathColors` in the new shape automatically.
+
+**If you edit `settings.json` by hand:** update rules to use `folderPath` / `filePath` / `extension` as above. See `CHANGELOG.md` for the full 3.0.0 notes.
+
 ![vscode-folder-colorizer](https://github.com/egorovsa/vscode-folder-colorizer/blob/main/fc-cp.png?raw=true)
 ![vscode-folder-colorizer](https://github.com/egorovsa/vscode-folder-colorizer/blob/main/GIF.gif?raw=true)
 

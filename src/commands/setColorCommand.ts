@@ -7,7 +7,7 @@ import {
 import { patchConfig } from "../utils/patchConfig";
 
 export const setColorCommand = (context: vscode.ExtensionContext) => {
-  return async (c1: vscode.Uri, context2: vscode.Uri[]) => {
+  return async (_uri: vscode.Uri, context2: vscode.Uri[]) => {
     const options = getColorOptions(context);
 
     const selected = await vscode.window.showQuickPick(options, {
@@ -25,31 +25,28 @@ export const setColorCommand = (context: vscode.ExtensionContext) => {
         detail: "Test message",
       },
       "This folder and children",
-      "This folder only"
+      "This folder only",
     );
 
     const preparedPaths = context2.map((item) =>
-      userPathBasePathLess(item.fsPath)
+      userPathBasePathLess(item.fsPath),
     );
 
-    const folderPath = filterIncludedPaths(preparedPaths);
+    const values = filterIncludedPaths(preparedPaths);
 
     if (button === "This folder only") {
       patchConfig({
-        folderPath,
+        ruleType: "folder",
+        values,
         color: selected.description,
         isFolderOnly: true,
       });
     } else if (button === "This folder and children") {
       patchConfig({
-        folderPath,
+        ruleType: "folder",
+        values,
         color: selected.description,
       });
     }
-
-    // changeConfig({
-    //   folderPath: context2.map((item) => userPathLessPath(item.fsPath)),
-    //   color: selected.description,
-    // });
   };
 };

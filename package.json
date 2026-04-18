@@ -3,7 +3,7 @@
   "publisher": "SergeyEgorov",
   "displayName": "Folder Color",
   "description": "Color folders and files in the VS Code Explorer, add badges and emoji labels, and organize project navigation with custom path rules",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/egorovsa/vscode-folder-colorizer.git"
@@ -2950,22 +2950,33 @@
             "type": "object",
             "properties": {
               "folderPath": {
-                "type": "string"
+                "type": "string",
+                "description": "Folder path prefix rule (and children unless isFolderOnly)."
+              },
+              "filePath": {
+                "type": "string",
+                "description": "Exact workspace-relative file path rule."
+              },
+              "extension": {
+                "type": "string",
+                "description": "File extension token without dot (for example: ts, cs)."
               },
               "color": {
                 "type": "string"
               },
               "badge": {
                 "type": "string"
+              },
+              "isFolderOnly": {
+                "type": "boolean"
               }
             },
             "required": [
-              "color",
-              "folderPath"
+              "color"
             ]
           },
           "default": [],
-          "description": "Folder color and badge rules."
+          "description": "Color and badge rules: use exactly one of folderPath, filePath, or extension per item."
         },
         "folder-color.useGlobalSettings": {
           "type": "boolean",

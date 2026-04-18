@@ -12,14 +12,6 @@ interface UsePathRulesResult {
   extensionRules: IndexedRule[];
 }
 
-const isFilePathRule = (folderPath: string): boolean => {
-  const normalizedPath = folderPath.replace(/[\\/]+$/, "");
-  const fileName = normalizedPath.split(/[\\/]/).pop() || "";
-  const extensionIndex = fileName.lastIndexOf(".");
-
-  return extensionIndex > 0;
-};
-
 export const usePathRules = (pathColors: PathColorItem[]): UsePathRulesResult => {
   return React.useMemo(() => {
     const indexedRules = pathColors.map((item, index) => ({ item, index }));
@@ -27,16 +19,22 @@ export const usePathRules = (pathColors: PathColorItem[]): UsePathRulesResult =>
     return {
       folderRules: indexedRules.filter(
         (rule) =>
-          !rule.item.isForExtension &&
-          !rule.item.isForFile &&
-          !isFilePathRule(rule.item.folderPath)
+          rule.item.folderPath !== undefined &&
+          rule.item.filePath === undefined &&
+          rule.item.extension === undefined
       ),
       fileRules: indexedRules.filter(
         (rule) =>
-          !rule.item.isForExtension &&
-          (rule.item.isForFile || isFilePathRule(rule.item.folderPath))
+          rule.item.filePath !== undefined &&
+          rule.item.folderPath === undefined &&
+          rule.item.extension === undefined
       ),
-      extensionRules: indexedRules.filter((rule) => rule.item.isForExtension),
+      extensionRules: indexedRules.filter(
+        (rule) =>
+          rule.item.extension !== undefined &&
+          rule.item.folderPath === undefined &&
+          rule.item.filePath === undefined
+      ),
     };
   }, [pathColors]);
 };

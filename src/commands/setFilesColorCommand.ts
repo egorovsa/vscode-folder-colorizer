@@ -19,12 +19,13 @@ export const setFilesColorCommand = (context: vscode.ExtensionContext) => {
     }
 
     const selectedUris = uriArray.length ? uriArray : [uri];
-    const filePaths = selectedUris.map((item) =>
+    const values = selectedUris.map((item) =>
       normalizeFileRulePath(userPathBasePathLess(item.fsPath))
     );
 
     patchConfig({
-      folderPath: filePaths,
+      ruleType: "file",
+      values,
       color: selected.description,
     });
   };

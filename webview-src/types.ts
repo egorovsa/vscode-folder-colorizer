@@ -1,9 +1,9 @@
 export interface PathColorItem {
-  folderPath: string;
+  folderPath?: string;
+  filePath?: string;
+  extension?: string;
   color?: string;
   badge?: string;
-  isForExtension?: boolean;
-  isForFile?: boolean;
   isFolderOnly?: boolean;
 }
 
@@ -32,7 +32,7 @@ export type IncomingMessage = {
 } | {
   type: "filePicked";
   payload: {
-    folderPath: string;
+    filePath: string;
   };
 };
 

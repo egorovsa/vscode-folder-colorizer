@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { PathColors } from "../types";
+import { PathColorRule } from "../types";
 import { colorize } from "../utils/colorize";
 import { getContributedColors } from "../utils/getContributedColors";
 import {
@@ -10,7 +10,7 @@ import {
   updateFavoriteColors,
   updateUseGlobalSettings,
 } from "../utils/useConfig";
-import { userPathBasePathLess } from "../utils/userPathLessPath";
+import { normalizeFileRulePath, userPathBasePathLess } from "../utils";
 
 interface ControlPanelMessage {
   type:
@@ -21,7 +21,7 @@ interface ControlPanelMessage {
     | "pickFile"
     | "setUseGlobalSettings"
     | "setFavoriteColors";
-  payload?: PathColors[];
+  payload?: PathColorRule[];
   useGlobalSettings?: boolean;
   favoriteColors?: string[];
 }
@@ -182,7 +182,9 @@ export const registerControlPanelCommand = (
           panel.webview.postMessage({
             type: "filePicked",
             payload: {
-              folderPath: userPathBasePathLess(selectedFile.fsPath),
+              filePath: normalizeFileRulePath(
+                userPathBasePathLess(selectedFile.fsPath)
+              ),
             },
           });
           return;

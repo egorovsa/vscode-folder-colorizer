@@ -11,6 +11,8 @@ export * from "./getFileExtension";
 export * from "./getIconPath";
 export * from "./getResultColorBadge";
 export * from "./getUpdatedPathColors";
+export * from "./migrateLegacyPathColors";
 export * from "./normalizeFileRulePath";
+export * from "./pathRuleKind";
 export * from "./useConfig";
 export * from "./userPathLessPath";

@@ -1,12 +1,21 @@
-import { checkFileColorOrBadge } from "./checkFileColorOrBadge";
+import {
+  checkFileColorOrBadge,
+  CheckFileColorOrBadgeOptions,
+} from "./checkFileColorOrBadge";
 import { checkFilesExtColorOrBadge } from "./checkFilesExtColorOrBadge";
 import { checkFolderOnlyColorOrBadge } from "./checkFolderOnlyColorOrBadge";
 import { checkPathColorOrBadge } from "./checkPathColorOrBadge";
-import { PathColors } from "../types";
+import { PathColorRule } from "../types";
 
-export const getResultColorBadge = (path: string, pathColors: PathColors[]) => {
+export type GetResultColorBadgeOptions = CheckFileColorOrBadgeOptions;
+
+export const getResultColorBadge = (
+  path: string,
+  pathColors: PathColorRule[],
+  options?: GetResultColorBadgeOptions
+) => {
   const currentPath = path;
-  const fileData = checkFileColorOrBadge(currentPath, pathColors);
+  const fileData = checkFileColorOrBadge(currentPath, pathColors, options);
 
   if (fileData.color && fileData.badge) {
     return {
