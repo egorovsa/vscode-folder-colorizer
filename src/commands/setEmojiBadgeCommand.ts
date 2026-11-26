@@ -6,8 +6,10 @@ export const setEmojiBadgeCommand = () => {
   return (_: vscode.Uri, context2: vscode.Uri[]) => {
     vscode.window
       .showQuickPick(
-        // QuickPick matches only the label by default, and the label is the emoji itself:
-        // the name, aliases and tags go in the description, which is matched too.
+        /**
+         * QuickPick matches only the label by default, and the label is the emoji itself:
+         * the name, aliases and tags go in the description, which is matched too.
+         */
         emoji.map((entry) => {
           const keywords = [
             ...new Set(

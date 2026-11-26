@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [3.0.1]
+
+### Fixed
+
+- Emoji badge list is now searchable: typing matches the emoji name, aliases and tags (#18).
+
 ## [3.0.0]
 
 ### Breaking
